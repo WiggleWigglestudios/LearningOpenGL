@@ -22,4 +22,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="frag.glsl" />
+  </ItemGroup>
 </Project>

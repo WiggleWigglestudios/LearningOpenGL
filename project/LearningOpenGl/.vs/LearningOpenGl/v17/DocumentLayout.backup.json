@@ -5,6 +5,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\MainFIle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\MainFIle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\vert.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\frag.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +22,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "frag.glsl",
+              "DocumentMoniker": "C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl",
+              "RelativeDocumentMoniker": "LearningOpenGl\\frag.glsl",
+              "ToolTip": "C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl",
+              "RelativeToolTip": "LearningOpenGl\\frag.glsl",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-06-13T10:34:38.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "vert.glsl",
+              "DocumentMoniker": "C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl",
+              "RelativeDocumentMoniker": "LearningOpenGl\\vert.glsl",
+              "ToolTip": "C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl",
+              "RelativeToolTip": "LearningOpenGl\\vert.glsl",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-06-13T10:34:15.793Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +58,7 @@
               "RelativeDocumentMoniker": "LearningOpenGl\\MainFIle.cpp",
               "ToolTip": "C:\\Users\\breck\\OneDrive\\Documents\\Learning OpenGL2\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\MainFIle.cpp",
               "RelativeToolTip": "LearningOpenGl\\MainFIle.cpp",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAD0AAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAAAJAAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-07T01:52:36.046Z",
               "EditorCaption": ""

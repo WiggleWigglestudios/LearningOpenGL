@@ -135,6 +135,14 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="MainFIle.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="vert.glsl">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="frag.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
