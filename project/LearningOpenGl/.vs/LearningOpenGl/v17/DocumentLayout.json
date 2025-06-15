@@ -7,20 +7,20 @@
       "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\MainFIle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\vert.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\frag.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\Shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\Shader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\Shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\frag.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\vert.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\glm\\glm.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -46,25 +46,24 @@
               "RelativeToolTip": "LearningOpenGl\\glm\\glm.hpp",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-06-14T18:40:24.662Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T18:40:24.662Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Shader.cpp",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.cpp",
               "RelativeDocumentMoniker": "LearningOpenGl\\Shader.cpp",
               "ToolTip": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.cpp",
               "RelativeToolTip": "LearningOpenGl\\Shader.cpp",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAAAGAAAAABAAAA",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAAGAAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-13T23:48:08.061Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Shader.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\Shader.h",
@@ -77,7 +76,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "frag.glsl",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl",
               "RelativeDocumentMoniker": "LearningOpenGl\\frag.glsl",
@@ -90,13 +89,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "vert.glsl",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl",
               "RelativeDocumentMoniker": "LearningOpenGl\\vert.glsl",
               "ToolTip": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl",
               "RelativeToolTip": "LearningOpenGl\\vert.glsl",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAA0AAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABAAAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-06-13T10:34:15.793Z",
               "EditorCaption": ""
@@ -109,7 +108,7 @@
               "RelativeDocumentMoniker": "LearningOpenGl\\MainFIle.cpp",
               "ToolTip": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\MainFIle.cpp",
               "RelativeToolTip": "LearningOpenGl\\MainFIle.cpp",
-              "ViewState": "AQIAANsAAAAAAAAAAAAAAOYAAAAaAAAA",
+              "ViewState": "AQIAAL0AAAAAAAAAAAAAAM4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-07T01:52:36.046Z",
               "EditorCaption": ""
