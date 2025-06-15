@@ -10,6 +10,17 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Player.h";
+
+
+float deltaTime = 0.0f;	
+float lastFrame = 0.0f; 
+Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),10.0);
+
+double lastXPosMouse = 0.0f;
+double lastYPosMouse = 0.0f;
+bool locked = false;
+
 
 //gets called when window size changes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -21,10 +32,47 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
   //  std::cout << width << " " << height << std::endl;
 }
 
-void processInput(GLFWwindow* window)
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    if (action == GLFW_RELEASE&&key==GLFW_KEY_ESCAPE)
+    {
+        if (!locked)
+        {
+           // std::cout << "close" << std::endl;
+            glfwSetWindowShouldClose(window, true);
+        }
+        else
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            locked = false;
+        }
+    }
+    
+}
+
+void processInputs(GLFWwindow* window)
+{
+    player.updateMovement(window, deltaTime);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+
+    if (locked)
+    {
+        player.updateLook(deltaTime,glm::vec2(xpos- lastXPosMouse,ypos-lastYPosMouse));
+    }
+    
+    lastXPosMouse = xpos;
+    lastYPosMouse = ypos;
+}
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        locked = true;
+    }
 }
 
 
@@ -67,6 +115,9 @@ int main()
     //making it so when window sizes changes framebuffer_size_callback is called
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback); 
+    glfwSetKeyCallback(window, key_callback);
 
 
 
@@ -212,34 +263,36 @@ int main()
     basicShader.setInt("texture2", 1);
 
 
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
     
-    
-    
+
+    lastFrame = glfwGetTime();
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window);
+       // std::cout  << player.pos.x << " " << player.pos.y << " " << player.pos.z << " " << std::endl;
+        deltaTime = glfwGetTime() - lastFrame;
+        lastFrame = glfwGetTime();
 
+        processInputs(window);
 
         glEnable(GL_DEPTH_TEST);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         float timeValue = glfwGetTime();
         basicShader.use();
         basicShader.setFloat("iTime", timeValue);
 
-        trans = glm::mat4(1.0f);
+
+        glm::mat4 trans = glm::mat4(1.0f);
         trans = glm::rotate(trans, glm::radians(timeValue*100), glm::vec3(0.0, 0.0, 1.0));
         trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(timeValue * 30), glm::vec3(0.0f, 1.0f, 0.0f));
-        glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 view = glm::lookAt(player.pos, player.pos + player.lookDir, glm::vec3(0,1,0));
+        view = glm::translate(view, -player.pos);
         
         glfwGetWindowSize(window, &width, &height);
         glm::mat4 projection = glm::perspective(glm::radians(103.0f), (float)width / (float)height, 0.1f, 100.0f);

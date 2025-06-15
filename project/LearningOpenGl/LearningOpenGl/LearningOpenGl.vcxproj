@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="MainFIle.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +178,7 @@
     <ClInclude Include="glm\vec3.hpp" />
     <ClInclude Include="glm\vec4.hpp" />
     <ClInclude Include="glm\vector_relational.hpp" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>

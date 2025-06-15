@@ -1,3 +1,7 @@
 ﻿  MainFIle.cpp
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(230,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  LearningOpenGl.vcxproj -> C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\x64\Debug\LearningOpenGl.exe
+C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(13,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(269,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(273,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(274,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(282,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  LearningOpenGl.vcxproj -> C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\x64\Debug\LearningOpenGl.exe
