@@ -295,7 +295,7 @@ int main()
         view = glm::translate(view, -player.pos);
         
         glfwGetWindowSize(window, &width, &height);
-        glm::mat4 projection = glm::perspective(glm::radians(103.0f), (float)width / (float)height, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)width / (float)height, 0.1f, 100.0f);
 
         basicShader.setMat4("model", model);
         basicShader.setMat4("view", view);

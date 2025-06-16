@@ -4,4 +4,6 @@ C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\Learni
 C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(273,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(274,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(282,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Object.cpp
+  Generating Code...
   LearningOpenGl.vcxproj -> C:\Users\breck\OneDrive\Documents\Learning OpenGL2\LearningOpenGL\project\LearningOpenGl\x64\Debug\LearningOpenGl.exe

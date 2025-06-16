@@ -17,23 +17,24 @@ Player::Player(glm::vec3 spawnPos, glm::vec3 spawnLookDir,float _movementSpeed)
 
 void Player::updateMovement(GLFWwindow* window,float deltaTime)
 {
-    //std::cout << "balls" << std::endl;
+    glm::vec3 forwardMovementDir = glm::normalize(glm::vec3(lookDir.x, 0, lookDir.z));
+    glm::vec3 rightMovementDir = glm::normalize(glm::cross(forwardMovementDir,glm::vec3(0,1,0)));
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-       //  std::cout << "w " << lookDir.x << " "<< lookDir.y << " "<< lookDir.z<< " " << std::endl;
-        pos += movementSpeed * lookDir*deltaTime;
+        pos += movementSpeed * forwardMovementDir *deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        pos -= movementSpeed * lookDir * deltaTime;
+        pos -= movementSpeed * forwardMovementDir * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        pos -= glm::normalize(glm::cross(lookDir, glm::vec3(0,1,0))) * movementSpeed * deltaTime;
+        pos -= glm::normalize(glm::cross(rightMovementDir, glm::vec3(0,1,0))) * movementSpeed * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        pos += glm::normalize(glm::cross(lookDir, glm::vec3(0, 1, 0))) * movementSpeed * deltaTime;
+        pos += glm::normalize(glm::cross(rightMovementDir, glm::vec3(0, 1, 0))) * movementSpeed * deltaTime;
     }
 
 }
