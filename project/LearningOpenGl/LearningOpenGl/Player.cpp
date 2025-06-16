@@ -5,14 +5,14 @@ Player::Player(glm::vec3 spawnPos, glm::vec3 spawnLookDir)
     pos = spawnPos;
     lookDir = normalize(spawnLookDir);
     movementSpeed = 5.0;
-    mouseSensitivity = 4;
+    mouseSensitivity = 1;
 }
 Player::Player(glm::vec3 spawnPos, glm::vec3 spawnLookDir,float _movementSpeed)
 {
     pos = spawnPos;
     lookDir = spawnLookDir;
     movementSpeed = _movementSpeed;
-    mouseSensitivity = 4;
+    mouseSensitivity = 1;
 }
 
 void Player::updateMovement(GLFWwindow* window,float deltaTime)
@@ -30,11 +30,11 @@ void Player::updateMovement(GLFWwindow* window,float deltaTime)
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        pos -= glm::normalize(glm::cross(rightMovementDir, glm::vec3(0,1,0))) * movementSpeed * deltaTime;
+        pos -= rightMovementDir * movementSpeed * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        pos += glm::normalize(glm::cross(rightMovementDir, glm::vec3(0, 1, 0))) * movementSpeed * deltaTime;
+        pos += rightMovementDir * movementSpeed * deltaTime;
     }
 
 }

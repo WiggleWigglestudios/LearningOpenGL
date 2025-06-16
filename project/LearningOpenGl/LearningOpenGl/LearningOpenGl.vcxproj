@@ -154,6 +154,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.glsl" />
+    <None Include="voxelFrag.glsl" />
+    <None Include="voxelVert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glm\common.hpp" />

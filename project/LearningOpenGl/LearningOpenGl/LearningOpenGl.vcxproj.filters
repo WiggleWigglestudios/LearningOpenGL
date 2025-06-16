@@ -36,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.glsl" />
+    <None Include="voxelVert.glsl" />
+    <None Include="voxelFrag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">

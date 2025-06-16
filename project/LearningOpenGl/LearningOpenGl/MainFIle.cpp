@@ -11,7 +11,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Player.h";
-
+#include "Object.h";
+#include <vector>
 
 float deltaTime = 0.0f;	
 float lastFrame = 0.0f; 
@@ -263,8 +264,21 @@ int main()
     basicShader.setInt("texture2", 1);
 
 
+    Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    
+    std::vector<unsigned char> voxelData = 
+    {
+    0,0,0,0,
+    0,0,0,0
+    };
+    std::vector<unsigned char> voxelPalatte(256*4,0);
+    voxelPalatte[0] = 255;
+    voxelPalatte[1] = 255;
+    voxelPalatte[2] = 255;
+    voxelPalatte[3] = 255;
+    Object testObject = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0), voxelData,glm::vec3(2,2,2), voxelPalatte);
+    testObject.updateShader(voxelShader);
+    testObject.createVertexBufferObject();
 
     lastFrame = glfwGetTime();
     while (!glfwWindowShouldClose(window))
@@ -283,10 +297,6 @@ int main()
         basicShader.use();
         basicShader.setFloat("iTime", timeValue);
 
-
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, glm::radians(timeValue*100), glm::vec3(0.0, 0.0, 1.0));
-        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -300,6 +310,8 @@ int main()
         basicShader.setMat4("model", model);
         basicShader.setMat4("view", view);
         basicShader.setMat4("projection", projection);
+        
+
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
@@ -309,6 +321,9 @@ int main()
         glDrawElements(GL_TRIANGLES, 3*2*6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
+
+
+        testObject.render(view, projection);
 
 
         glfwSwapBuffers(window);
