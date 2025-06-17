@@ -36,12 +36,21 @@ void Player::updateMovement(GLFWwindow* window,float deltaTime)
     {
         pos += rightMovementDir * movementSpeed * deltaTime;
     }
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    {
+        pos += glm::vec3(0, 1, 0) * movementSpeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS|| glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+    {
+        pos += glm::vec3(0, -1, 0) * movementSpeed * deltaTime;
+    }
 
 }
 void Player::updateLook(float deltaTime, glm::vec2 deltaMouse)
 {
     lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0), deltaMouse.x * deltaTime * mouseSensitivity, glm::vec3(0, 1, 0)));
     lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0), deltaMouse.y * deltaTime * mouseSensitivity, glm::normalize(glm::cross(lookDir, glm::vec3(0, 1, 0)))));
+    
 }
 
 

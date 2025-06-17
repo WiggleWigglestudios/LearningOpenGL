@@ -22,82 +22,60 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 
 void Object::updateVolumeTexture()
 {
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &volumeTexture);
-	glBindTexture(GL_TEXTURE_2D, volumeTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glBindTexture(GL_TEXTURE_3D, volumeTexture);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
 
-	if (voxelData.size() > 0)
+	if (voxelData.size() == voxelSize.x*voxelSize.y*voxelSize.z)
 	{
-		glTexImage3D(GL_TEXTURE_3D, 0, GL_R, voxelSize.x, voxelSize.y, voxelSize.z, 0, GL_R, GL_UNSIGNED_BYTE, voxelData.data());
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, voxelSize.x, voxelSize.y, voxelSize.z,
+			0, GL_RED, GL_UNSIGNED_BYTE, voxelData.data());
 	}
 	else
 	{
-		std::cout << "no voxel data. can't update volume texture" << std::endl;
+		std::cout << "incorrect voxel data size. can't update volume texture" << std::endl;
+		std::cout << voxelData.size()<<" vs the expected " << voxelSize.x * voxelSize.y * voxelSize.z << std::endl;
 	}
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
 }
 
 void Object::createVertexBufferObject()
 {
     float vertices[] = {
-        //bottom face
-        -0.5f, -0.5f, -0.5f,    0.0f,0.0f,
-        -0.5f, -0.5f, 0.5f,     0.0f,0.5f,
-        0.5f, -0.5f, 0.5f,      0.5f, 0.5f,
-        0.5f, -0.5f, -0.5f,     0.5f, 0.0f,
-
-        //top face
-        -0.5f, 0.5f, 0.5f,     0.0f,0.0f,
-        -0.5f, 0.5f, -0.5f,    0.0f,0.5f,
-        0.5f, 0.5f, -0.5f,     0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,      0.5f, 0.0f,
-
-        //back face
-        -0.5f, 0.5f, -0.5f,     0.0f,0.5f,
-        -0.5f, -0.5f, -0.5f,    0.0f,1.0f,
-        0.5f, -0.5f, -0.5f,     0.5f, 1.0f,
-        0.5f, 0.5f, -0.5f,      0.5f, 0.5f,
-
-        //front face
-        -0.5f, -0.5f, 0.5f,   0.0f,0.5f,
-        -0.5f, 0.5f, 0.5f,    0.0f,1.0f,
-        0.5f, 0.5f, 0.5f,     0.5f, 1.0f,
-        0.5f, -0.5f, 0.5f,    0.5f, 0.5f,
-
-        //left face
-        -0.5f, -0.5f, -0.5f,   0.0f,0.5f,
-        -0.5f, 0.5f, -0.5f,    0.0f,1.0f,
-        -0.5f, 0.5f, 0.5f,     0.5f, 1.0f,
-        -0.5f, -0.5f, 0.5f,    0.5f, 0.5f,
-
-        //right face
-        0.5f, -0.5f, 0.5f,   0.0f,0.5f,
-        0.5f, 0.5f, 0.5f,    0.0f,1.0f,
-        0.5f, 0.5f, -0.5f,   0.5f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.5f, 0.5f,
+        -0.5f,-0.5f,-0.5f,  0.0f,0.0f,0.0f,
+        -0.5f,-0.5f,0.5f,   0.0f,0.0f,1.0f,
+        -0.5f,0.5f,-0.5f,   0.0f,1.0f,0.0f,
+        -0.5f,0.5f,0.5f,    0.0f,1.0f,1.0f,
+        0.5f,-0.5f,-0.5f,   1.0f,0.0f,0.0f,
+        0.5f,-0.5f,0.5f,    1.0f,0.0f,1.0f,
+        0.5f,0.5f,-0.5f,    1.0f,1.0f,0.0f,
+        0.5f,0.5f,0.5f,     1.0f,1.0f,1.0f,
     };
     unsigned int indices[] = {
-        //bottom face
-        0, 1, 2,
-        0, 2, 3,
-        //top face
-        4, 5, 6,
-        4, 6, 7,
         //back face
-        8, 9, 10,
-        8, 10, 11,
+        0,2,6,
+		6,4,0,
         //front face
-        12, 13, 14,
-        12, 14, 15,
+        5,7,3,
+		5,3,1,
+        //bottom face
+		0,5,1,
+		0,4,5,
+        //top face
+        6,2,3,
+		6,3,7,
         //left face
-        16, 17, 18,
-        16, 18, 19,
+        2,0,1,
+		2,1,3,
         //right face
-        20, 21, 22,
-        20, 22, 23
+        4,6,7,
+		4,7,5
     };
 
 	glGenBuffers(1, &VBO);
@@ -113,9 +91,9 @@ void Object::createVertexBufferObject()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	//first parameter tells which vertex attribute we are configuring. In our case vertex 
    //attribute 0 is a vec3 position (defined in the ver.glsl shader)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
 }
@@ -125,24 +103,35 @@ void Object::updateShader(Shader inputShader)
     voxelShader = inputShader;
 }
 
+
+void Object::rotate(float angle, glm::vec3 axis)
+{
+    forwardDir = glm::vec3(glm::vec4(forwardDir, 1.0) * glm::rotate(glm::mat4(1.0), angle, axis));
+    upDir = glm::vec3(glm::vec4(upDir, 1.0) * glm::rotate(glm::mat4(1.0), angle, axis));
+}
+
+
 void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
 {
 
     voxelShader.use();
-    voxelShader.setInt("texture1", 0);
-    voxelShader.setInt("texture2", 1);
+    voxelShader.setInt("volumeTexture", 0);
 
-    glm::mat4 modelMat = glm::lookAt(pos, pos + forwardDir, upDir);
-    modelMat = glm::translate(modelMat, pos);
+    glm::mat4 modelMat = glm::lookAt(glm::vec3(0, 0, 0),forwardDir, upDir);
+    modelMat = glm::translate(glm::mat4(1.0), pos) * modelMat * glm::scale(glm::mat4(1.0), glm::vec3(voxelSize)*glm::vec3(1.0/8.0,1.0/8.0,1.0/8.0));
+
+	glm::mat4 inverseMat = glm::inverse(glm::translate(glm::mat4(1.0), pos) * glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
+	//inverseMat = glm::mat4(1.0);
 
     voxelShader.setMat4("model", modelMat);
     voxelShader.setMat4("view", viewMat);
-    voxelShader.setMat4("projection", projectionMat);
-    /*
+	voxelShader.setMat4("projection", projectionMat);
+	voxelShader.setMat4("inverseMat", inverseMat);
+	voxelShader.setVec3("voxelSize", float(voxelSize.x), float(voxelSize.y), float(voxelSize.z));
+    
+
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture2);*/
+    glBindTexture(GL_TEXTURE_3D, volumeTexture);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 3 * 2 * 6, GL_UNSIGNED_INT, 0);

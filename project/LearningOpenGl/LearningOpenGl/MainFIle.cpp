@@ -111,20 +111,20 @@ int main()
 
 
     glViewport(0, 0, 800, 600);
-   
+
 
     //making it so when window sizes changes framebuffer_size_callback is called
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback); 
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetKeyCallback(window, key_callback);
 
 
 
     Shader basicShader("vert.glsl", "frag.glsl");
 
-   
+
 
 
     float vertices[] = {
@@ -202,14 +202,14 @@ int main()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     //first parameter tells which vertex attribute we are configuring. In our case vertex 
    //attribute 0 is a vec3 position (defined in the ver.glsl shader)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),(void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),(void*)(3*sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glBindVertexArray(0);
 
 
-   
+
 
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -219,7 +219,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    
+
     int width, height, nrChannels;
     unsigned char* imageData = stbi_load("Textures\\Dark_Oak_Log_Comparison.png", &width, &height, &nrChannels, 0);
     if (imageData)
@@ -257,7 +257,7 @@ int main()
     }
     stbi_image_free(imageData);
 
-   
+
 
     basicShader.use();
     basicShader.setInt("texture1", 0);
@@ -266,31 +266,43 @@ int main()
 
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    std::vector<unsigned char> voxelData = 
+    std::vector<unsigned char> voxelData(16 * 16 * 16, 0);
+    for (int i = 0; i < 16; i++)
     {
-    0,0,0,0,
-    0,0,0,0
-    };
+        for (int c = 0; c < 16; c++)
+        {
+            for (int d = 0; d < 16; d++)
+            {
+
+                voxelData[d * 16+c*16*16 + i] = d*6+c * 6*6 + i;
+            }
+            
+        }
+    }
     std::vector<unsigned char> voxelPalatte(256*4,0);
-    voxelPalatte[0] = 255;
-    voxelPalatte[1] = 255;
-    voxelPalatte[2] = 255;
-    voxelPalatte[3] = 255;
-    Object testObject = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0), voxelData,glm::vec3(2,2,2), voxelPalatte);
+    voxelPalatte[4] = 255;
+    voxelPalatte[5] = 255;
+    voxelPalatte[6] = 255;
+    voxelPalatte[7] = 255;
+    Object testObject = Object(glm::vec3(0 , 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0), voxelData,glm::vec3(16,16,16), voxelPalatte);
     testObject.updateShader(voxelShader);
+    testObject.updateVolumeTexture();
     testObject.createVertexBufferObject();
 
     lastFrame = glfwGetTime();
     while (!glfwWindowShouldClose(window))
     {
-       // std::cout  << player.pos.x << " " << player.pos.y << " " << player.pos.z << " " << std::endl;
         deltaTime = glfwGetTime() - lastFrame;
         lastFrame = glfwGetTime();
+
+        testObject.rotate(2 * deltaTime, glm::vec3(1.0, 0, 0));
+        testObject.rotate(0.5 * deltaTime, glm::vec3(0.0, 0, 1.0));
+        testObject.pos = glm::vec3(cos(lastFrame), 0.0, sin(lastFrame));
 
         processInputs(window);
 
         glEnable(GL_DEPTH_TEST);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.1f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         float timeValue = glfwGetTime();
@@ -299,8 +311,8 @@ int main()
 
         
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(timeValue * 30), glm::vec3(0.0f, 1.0f, 0.0f));
+       // model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(timeValue * 30), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 view = glm::lookAt(player.pos, player.pos + player.lookDir, glm::vec3(0,1,0));
         view = glm::translate(view, -player.pos);
         
@@ -322,6 +334,12 @@ int main()
         glBindVertexArray(0);
 
 
+
+        glfwGetWindowSize(window, &width, &height);
+        testObject.voxelShader.use();
+        testObject.voxelShader.setVec2("windowSize", float(width), float(height));
+        testObject.voxelShader.setVec3("cameraPos", player.pos.x,player.pos.y,player.pos.z);
+        testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x,player.lookDir.y,player.lookDir.z);
 
         testObject.render(view, projection);
 

@@ -40,4 +40,5 @@ public:
 
 	void updateVolumeTexture();
 
+	void rotate(float angle, glm::vec3 axis);
 };
