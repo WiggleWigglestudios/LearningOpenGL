@@ -111,16 +111,39 @@ void Object::rotate(float angle, glm::vec3 axis)
 }
 
 
+glm::mat4 Object::generateRotationMatrix()
+{
+
+	// Compute right vector
+	glm::vec3 right = glm::normalize(glm::cross(-forwardDir, upDir));
+
+	// Recompute orthogonal up direction
+	glm::vec3 upOrtho = glm::cross(right, -forwardDir);
+
+	glm::mat4 rotationMat = glm::mat4(1.0);//glm::lookAt(glm::vec3(0, 0, 0),-forwardDir, upDir);
+	rotationMat[0] = glm::vec4(right, 0.0);
+	rotationMat[1] = glm::vec4(upOrtho, 0.0);
+	rotationMat[2] = glm::vec4(forwardDir, 0.0);
+
+	return rotationMat;
+}
+
+glm::mat4 Object::generateTranslationMatrix()
+{
+	return glm::translate(glm::mat4(1.0), pos);
+}
+
 void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
 {
 
     voxelShader.use();
     voxelShader.setInt("volumeTexture", 0);
 
-    glm::mat4 modelMat = glm::lookAt(glm::vec3(0, 0, 0),forwardDir, upDir);
-    modelMat = glm::translate(glm::mat4(1.0), pos) * modelMat * glm::scale(glm::mat4(1.0), glm::vec3(voxelSize)*glm::vec3(1.0/8.0,1.0/8.0,1.0/8.0));
 
-	glm::mat4 inverseMat = glm::inverse(glm::translate(glm::mat4(1.0), pos) * glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
+
+	glm::mat4 modelMat = generateTranslationMatrix() * generateRotationMatrix() * glm::scale(glm::mat4(1.0), glm::vec3(voxelSize)*glm::vec3(1.0/8.0,1.0/8.0,1.0/8.0));
+
+	glm::mat4 inverseMat = glm::inverse(generateTranslationMatrix() * generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
 	//inverseMat = glm::mat4(1.0);
 
     voxelShader.setMat4("model", modelMat);

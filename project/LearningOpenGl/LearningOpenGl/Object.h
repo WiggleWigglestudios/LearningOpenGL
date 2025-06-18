@@ -41,4 +41,8 @@ public:
 	void updateVolumeTexture();
 
 	void rotate(float angle, glm::vec3 axis);
+
+	glm::mat4 generateRotationMatrix();
+
+	glm::mat4 generateTranslationMatrix();
 };

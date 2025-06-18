@@ -48,12 +48,15 @@ void Player::updateMovement(GLFWwindow* window,float deltaTime)
 }
 void Player::updateLook(float deltaTime, glm::vec2 deltaMouse)
 {
-    lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0), deltaMouse.x * deltaTime * mouseSensitivity, glm::vec3(0, 1, 0)));
+    lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0),deltaMouse.x * deltaTime * mouseSensitivity, glm::vec3(0, 1, 0)));
     lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0), deltaMouse.y * deltaTime * mouseSensitivity, glm::normalize(glm::cross(lookDir, glm::vec3(0, 1, 0)))));
     
 }
 
-
+glm::mat4 Player::generateViewMat()
+{
+    return glm::lookAt(pos, pos + lookDir, glm::vec3(0, 1, 0));;
+}
 
 
 

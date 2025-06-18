@@ -24,5 +24,5 @@ public:
 
 	void updateMovement(GLFWwindow* window, float deltaTime);
 	void updateLook(float deltaTime,glm::vec2 deltaMouse);
-
+	glm::mat4 generateViewMat();
 };

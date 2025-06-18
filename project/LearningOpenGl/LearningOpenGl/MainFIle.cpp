@@ -76,11 +76,34 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
 }
 
+void printVec3(glm::vec3 _vector)
+{
+    std::cout << _vector.x << " " << _vector.y << " " << _vector.z << std::endl;
+}
+void printVec4(glm::vec4 _vector)
+{
+    std::cout << _vector.x << " " << _vector.y << " " << _vector.z<<" "<<_vector.w << std::endl;
+}
+
+void printMat4(glm::mat4 _matrix )
+{
+    std::cout << "Matrix" << std::endl;
+    printVec4(_matrix[0]);
+    printVec4(_matrix[1]);
+    printVec4(_matrix[2]);
+    printVec4(_matrix[3]);
+    std::cout << " " << std::endl;
+}
+
+
+
 
 std::string readAllText(const std::string& filePath) {
     std::ifstream inFile(filePath);
     return std::string(std::istreambuf_iterator<char>(inFile), {});
 }
+
+
 
 int main()
 {
@@ -266,15 +289,19 @@ int main()
 
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    std::vector<unsigned char> voxelData(16 * 16 * 16, 0);
-    for (int i = 0; i < 16; i++)
+    int xSize = 5;
+    int ySize = 5;
+    int zSize = 16;
+
+    std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
+    for (int i = 0; i < xSize; i++)
     {
-        for (int c = 0; c < 16; c++)
+        for (int c = 0; c < ySize; c++)
         {
-            for (int d = 0; d < 16; d++)
+            for (int d = 0; d < zSize; d++)
             {
 
-                voxelData[d * 16+c*16*16 + i] = d*6+c * 6*6 + i;
+                voxelData[d * xSize*ySize+c*xSize + i] = d * xSize * ySize + c * xSize + i;
             }
             
         }
@@ -284,7 +311,7 @@ int main()
     voxelPalatte[5] = 255;
     voxelPalatte[6] = 255;
     voxelPalatte[7] = 255;
-    Object testObject = Object(glm::vec3(0 , 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0), voxelData,glm::vec3(16,16,16), voxelPalatte);
+    Object testObject = Object(glm::vec3(0 , 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), voxelData,glm::vec3(xSize,ySize,zSize), voxelPalatte);
     testObject.updateShader(voxelShader);
     testObject.updateVolumeTexture();
     testObject.createVertexBufferObject();
@@ -295,7 +322,7 @@ int main()
         deltaTime = glfwGetTime() - lastFrame;
         lastFrame = glfwGetTime();
 
-        testObject.rotate(2 * deltaTime, glm::vec3(1.0, 0, 0));
+        testObject.rotate(2 * deltaTime, glm::vec3(0.0, 1.0, 0.00));
         testObject.rotate(0.5 * deltaTime, glm::vec3(0.0, 0, 1.0));
         testObject.pos = glm::vec3(cos(lastFrame), 0.0, sin(lastFrame));
 
@@ -309,12 +336,16 @@ int main()
         basicShader.use();
         basicShader.setFloat("iTime", timeValue);
 
+        glm::vec3 cubePos = player.pos +(player.lookDir);
+       // printVec3(cubePos);
+       // printVec3(player.pos);
+        glm::mat4 model = glm::translate(glm::mat4(1.0), cubePos) * glm::scale(glm::mat4(1.0),glm::vec3(0.05,0.05,0.05));
+         model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(timeValue * 30), glm::vec3(0.0f, 1.0f, 0.0f));
         
-        glm::mat4 model = glm::mat4(1.0f);
-       // model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
-        //model = glm::rotate(model, glm::radians(timeValue * 30), glm::vec3(0.0f, 1.0f, 0.0f));
-        glm::mat4 view = glm::lookAt(player.pos, player.pos + player.lookDir, glm::vec3(0,1,0));
-        view = glm::translate(view, -player.pos);
+        
+        
+        glm::mat4 view = player.generateViewMat();
         
         glfwGetWindowSize(window, &width, &height);
         glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)width / (float)height, 0.1f, 100.0f);
@@ -322,7 +353,7 @@ int main()
         basicShader.setMat4("model", model);
         basicShader.setMat4("view", view);
         basicShader.setMat4("projection", projection);
-        
+
 
 
         glActiveTexture(GL_TEXTURE0);
@@ -330,7 +361,7 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 3*2*6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 3 * 2 * 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
 
@@ -338,16 +369,18 @@ int main()
         glfwGetWindowSize(window, &width, &height);
         testObject.voxelShader.use();
         testObject.voxelShader.setVec2("windowSize", float(width), float(height));
-        testObject.voxelShader.setVec3("cameraPos", player.pos.x,player.pos.y,player.pos.z);
-        testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x,player.lookDir.y,player.lookDir.z);
+        testObject.voxelShader.setVec3("cameraPos", cubePos.x, cubePos.y, cubePos.z);// player.pos.x, player.pos.y, player.pos.z);
+        testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x, player.lookDir.y, player.lookDir.z);
 
         testObject.render(view, projection);
 
 
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }
 
+
+
+    }
 
     glfwTerminate();
     return 0;
