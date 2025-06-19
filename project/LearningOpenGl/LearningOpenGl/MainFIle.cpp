@@ -16,7 +16,7 @@
 
 float deltaTime = 0.0f;	
 float lastFrame = 0.0f; 
-Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),10.0);
+Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),3.0);
 
 double lastXPosMouse = 0.0f;
 double lastYPosMouse = 0.0f;
@@ -289,9 +289,9 @@ int main()
 
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    int xSize = 5;
-    int ySize = 5;
-    int zSize = 16;
+    int xSize = 8;
+    int ySize = 8;
+    int zSize = 8;
 
     std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
     for (int i = 0; i < xSize; i++)
@@ -300,8 +300,16 @@ int main()
         {
             for (int d = 0; d < zSize; d++)
             {
+                if (glm::distance(glm::vec3(i, c, d), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 3)
+                {
+                    voxelData[d * xSize * ySize + c * xSize + i] = 1;
+                }
+                else
+                {
+                    voxelData[d * xSize * ySize + c * xSize + i] = 0;
+                    // i % 2;// d* xSize* ySize + c * xSize + i;
+                }
 
-                voxelData[d * xSize*ySize+c*xSize + i] = d * xSize * ySize + c * xSize + i;
             }
             
         }
@@ -322,9 +330,9 @@ int main()
         deltaTime = glfwGetTime() - lastFrame;
         lastFrame = glfwGetTime();
 
-        testObject.rotate(2 * deltaTime, glm::vec3(0.0, 1.0, 0.00));
-        testObject.rotate(0.5 * deltaTime, glm::vec3(0.0, 0, 1.0));
-        testObject.pos = glm::vec3(cos(lastFrame), 0.0, sin(lastFrame));
+       // testObject.rotate(2 * deltaTime, glm::vec3(0.0, 1.0, 0.00));
+       // testObject.rotate(0.5 * deltaTime, glm::vec3(0.0, 0, 1.0));
+        //testObject.pos = glm::vec3(cos(lastFrame), 0.0, sin(lastFrame));
 
         processInputs(window);
 
@@ -348,7 +356,8 @@ int main()
         glm::mat4 view = player.generateViewMat();
         
         glfwGetWindowSize(window, &width, &height);
-        glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)width / (float)height, 0.1f, 100.0f);
+        float fov = glm::radians(60.0f);
+        glm::mat4 projection = glm::perspective(fov, (float)width / (float)height, 0.1f, 100.0f);
 
         basicShader.setMat4("model", model);
         basicShader.setMat4("view", view);
@@ -368,8 +377,8 @@ int main()
 
         glfwGetWindowSize(window, &width, &height);
         testObject.voxelShader.use();
-        testObject.voxelShader.setVec2("windowSize", float(width), float(height));
-        testObject.voxelShader.setVec3("cameraPos", cubePos.x, cubePos.y, cubePos.z);// player.pos.x, player.pos.y, player.pos.z);
+        testObject.voxelShader.setVec3("windowSize", float(width), float(height), fov);
+        testObject.voxelShader.setVec3("cameraPos", player.pos.x, player.pos.y, player.pos.z);// cubePos.x, cubePos.y, cubePos.z);
         testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x, player.lookDir.y, player.lookDir.z);
 
         testObject.render(view, projection);

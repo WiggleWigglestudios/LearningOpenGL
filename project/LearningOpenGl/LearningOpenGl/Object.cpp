@@ -27,9 +27,9 @@ void Object::updateVolumeTexture()
 	glBindTexture(GL_TEXTURE_3D, volumeTexture);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
 
 	if (voxelData.size() == voxelSize.x*voxelSize.y*voxelSize.z)
 	{
@@ -68,7 +68,7 @@ void Object::createVertexBufferObject()
 		0,5,1,
 		0,4,5,
         //top face
-        6,2,3,
+		6,2,3,
 		6,3,7,
         //left face
         2,0,1,
