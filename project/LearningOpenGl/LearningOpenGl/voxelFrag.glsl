@@ -16,19 +16,23 @@ uniform mat4 inverseMat;
 struct RayHit
 {
 	bool hit;
-	int hitValue;
+	float hitValue;
+    float travelDist;
 };
 
 float checkVoxel(vec3 checkPos)
 {
-	return texture(volumeTexture,checkPos/voxelSize*1.0/8.0).r;
+	return texture(volumeTexture,checkPos/voxelSize/8.0).r;
 }
 
 RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
 {
 	RayHit outputHit;
 
-	
+    outputHit.hit=false;
+    outputHit.hitValue=0.0;
+	outputHit.travelDist=0.0;
+
     ivec3 transversePos=ivec3(startPos);
 	ivec3 stepDirs = ivec3(sign(rayDir));
     vec3 deltaDist = vec3(rayDir.x==0.0?1e30:abs(1.0/rayDir.x),
@@ -90,21 +94,18 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
             outputRay.dist=travelDist;
         }
         else*/
-
-        /*if(transversePos.x<0||transversePos.x>=voxelSize.x||
-        transversePos.y<0||transversePos.y>=voxelSize.y||
-        transversePos.z<0||transversePos.z>=voxelSize.z)
+        /*
+        if(transversePos.x<0||transversePos.x>voxelSize.x||
+        transversePos.y<0||transversePos.y>voxelSize.y||
+        transversePos.z<0||transversePos.z>voxelSize.z)
         {
-            outputHit.hit=false;
-            i=maxSteps;
+            //outputHit.hit=false;
+           // i=maxSteps;
         }else*/
-        if(checkVoxel(transversePos)>0){
-            i=maxSteps;
+        if(checkVoxel(vec3(transversePos))>0){
+          i=maxSteps;
           outputHit.hit=true;
-          outputHit.hitValue=int(checkVoxel(transversePos)*255);
-          //  outputRay.hit=true;
-           // outputRay.block=getBlock(transversePos);
-           // outputRay.dist=travelDist;
+          outputHit.hitValue=checkVoxel(transversePos);
         }
        
     }
@@ -165,9 +166,16 @@ void main()
 	vec3 rayDir=normalize(newCameraDir+sx * halfWidth * right + sy * halfHeight * up);
 
 	RayHit testHit=castRay(startingPos*8.0,rayDir,maxSteps);
+	//FragColor=vec4(rayDir,1.0);
+
+    
+    FragColor.x=1.0/length(newCameraPos-startingPos);
+    FragColor.y=1.0/length(newCameraPos-startingPos);
+    FragColor.z=1.0/length(newCameraPos-startingPos);
 
     if(!testHit.hit)
     {
-        FragColor=vec4(0.0,0.0,0.0,1.0);
+   //discard;
+        //FragColor=vec4(0.0,0.0,0.0,1.0);
     }
 }
