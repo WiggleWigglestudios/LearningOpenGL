@@ -22,7 +22,7 @@ struct RayHit
 
 float checkVoxel(vec3 checkPos)
 {
-	return texture(volumeTexture,checkPos/voxelSize/8.0).r;
+	return texture(volumeTexture,checkPos/voxelSize).r;
 }
 
 RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
@@ -58,31 +58,36 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
         stepDists.z=(float(transversePos.z)+1.0-startPos.z)*deltaDist.z;
     }
 
-	
+	if(checkVoxel(vec3(transversePos))>0){
+          outputHit.hit=true;
+          outputHit.hitValue=checkVoxel(transversePos);
+          return outputHit;
+   
+    }
     
     for(int i=0;i<maxSteps;i++){
         if(stepDists.x<stepDists.y){
             if(stepDists.x<stepDists.z){
-               // travelDist=stepDists.x;
+                outputHit.travelDist=stepDists.x;
                 stepDists.x+=deltaDist.x;
                 transversePos.x+=stepDirs.x;
                 //outputRay.normalDir=vec3(-stepDirs.x,0,0);
                 //outputRay.reflectionMult=vec3(-1,1,1);
             }else{
-               // travelDist=stepDists.z;
+                outputHit.travelDist=stepDists.z;
                 stepDists.z+=deltaDist.z;
                 transversePos.z+=stepDirs.z;
                 //outputRay.normalDir=vec3(0,0,-stepDirs.z);
                 //outputRay.reflectionMult=vec3(1,1,-1);
             }
         }else if(stepDists.y<stepDists.z){
-           // travelDist=stepDists.y;
+            outputHit.travelDist=stepDists.y;
             stepDists.y+=deltaDist.y;
             transversePos.y+=stepDirs.y;
             //outputRay.normalDir=vec3(0,-stepDirs.y,0);
             //outputRay.reflectionMult=vec3(1,-1,1);
         }else{
-           // travelDist=stepDists.z;
+            outputHit.travelDist=stepDists.z;
             stepDists.z+=deltaDist.z;
             transversePos.z+=stepDirs.z;
             //outputRay.normalDir=vec3(0,0,-stepDirs.z);
@@ -165,17 +170,18 @@ void main()
 
 	vec3 rayDir=normalize(newCameraDir+sx * halfWidth * right + sy * halfHeight * up);
 
-	RayHit testHit=castRay(startingPos*8.0,rayDir,maxSteps);
-	//FragColor=vec4(rayDir,1.0);
+	RayHit testHit=castRay(startingPos,rayDir,maxSteps);
+	FragColor=vec4(startingPos/voxelSize,1.0);
+    FragColor=vec4(rayDir,1.0);
 
     
-    FragColor.x=1.0/length(newCameraPos-startingPos);
-    FragColor.y=1.0/length(newCameraPos-startingPos);
-    FragColor.z=1.0/length(newCameraPos-startingPos);
+    FragColor.x=1.0/(length(newCameraPos-startingPos/8.0)+testHit.travelDist);
+    FragColor.y=1.0/(length(newCameraPos-startingPos/8.0)+testHit.travelDist);
+    FragColor.z=1.0/(length(newCameraPos-startingPos/8.0)+testHit.travelDist);
 
     if(!testHit.hit)
     {
-   //discard;
+        discard;
         //FragColor=vec4(0.0,0.0,0.0,1.0);
     }
 }

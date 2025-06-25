@@ -289,9 +289,9 @@ int main()
 
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    int xSize = 8;
-    int ySize = 8;
-    int zSize = 8;
+    int xSize = 16;
+    int ySize = 16;
+    int zSize = 16;
 
     std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
     for (int i = 0; i < xSize; i++)
@@ -300,7 +300,7 @@ int main()
         {
             for (int d = 0; d < zSize; d++)
             {
-                if (glm::distance(glm::vec3(i, c, d), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 3)
+                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 5)
                 {
                     voxelData[d * xSize * ySize + c * xSize + i] = 1;
                 }
