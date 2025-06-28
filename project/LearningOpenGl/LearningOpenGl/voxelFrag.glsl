@@ -1,6 +1,8 @@
 #version 460 core
 
 
+layout(depth_any) out float gl_FragDepth;
+
 out vec4 FragColor;
 in vec3 TexCoord;
 in vec4 gl_FragCoord;
@@ -11,6 +13,7 @@ uniform vec3 cameraPos;
 uniform vec3 cameraLookDir;
 uniform vec3 voxelSize;
 uniform mat4 inverseMat;
+uniform mat4 inverseRotMat;
 
 
 struct RayHit
@@ -123,7 +126,7 @@ void main()
 {
     float aspect=windowSize.x/windowSize.y;
     vec2 uv=gl_FragCoord.xy/windowSize.xy;
-    uv.x/=aspect;
+    uv.x*=aspect;
 	//how to sample the volumeTexture texture(volumeTexture,TexCoord).r
 	//FragColor = vec4(texture(volumeTexture,TexCoord).r,0.0,0.0,1.0);
 	//vec3 safeCoord = clamp(TexCoord, 0.0, 1.0 - 1e-5);
@@ -135,11 +138,13 @@ void main()
 	newCameraPos.x+=(voxelSize.x/2.0)/8.0;
 	newCameraPos.y+=(voxelSize.y/2.0)/8.0;
 	newCameraPos.z+=(voxelSize.z/2.0)/8.0;
-	vec3 newCameraDir=(inverseMat*vec4(cameraLookDir,1.0)).xyz;
-	vec3 newCameraRight=(inverseMat*vec4(cameraRight,1.0)).xyz;
+
+
+	vec3 newCameraDir=(inverseRotMat*vec4(cameraLookDir,1.0)).xyz;
+	vec3 newCameraRight=(inverseRotMat*vec4(cameraRight,1.0)).xyz;//normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));//(inverseRotMat*vec4(cameraRight,1.0)).xyz;
 
 	
-	vec3 safeCoord = clamp(TexCoord, 0.0, 1.0 - 1e-5);
+	vec3 safeCoord = clamp(TexCoord, 0.0, 1.0 - 1e-8);
 	vec3 startingPos=safeCoord*voxelSize;//floor(safeCoord*voxelSize)/voxelSize;
 
 	if(newCameraPos.x>=0&&newCameraPos.x<voxelSize.x/8.0&&
@@ -147,18 +152,19 @@ void main()
 	newCameraPos.z>=0&&newCameraPos.z<voxelSize.z/8.0)
 	{
 	
-		startingPos=newCameraPos;
+		startingPos=newCameraPos*8.0;
+        
 	}
 
 	
-	FragColor=vec4(startingPos,1.0);
+	FragColor=vec4(startingPos/voxelSize,1.0);
 	int maxSteps=int(voxelSize.x)+int(voxelSize.y)+int(voxelSize.z)+1;
     
 
 
 
     float halfHeight = tan(windowSize.z / 2.0f);
-    float halfWidth = halfHeight * aspect;
+    float halfWidth = halfHeight;// * aspect;
 
     // 2. Convert uv to screen space in [-1, 1] range
     //    where (0, 0) = bottom-left and (1, 1) = top-right
@@ -174,14 +180,24 @@ void main()
 	FragColor=vec4(startingPos/voxelSize,1.0);
     FragColor=vec4(rayDir,1.0);
 
-    
-    FragColor.x=1.0/(length(newCameraPos-startingPos/8.0)+testHit.travelDist);
-    FragColor.y=1.0/(length(newCameraPos-startingPos/8.0)+testHit.travelDist);
-    FragColor.z=1.0/(length(newCameraPos-startingPos/8.0)+testHit.travelDist);
+    float depth=length(newCameraPos-startingPos/8.0)+testHit.travelDist;
+
+    FragColor.x/=depth;
+    FragColor.y/=depth;
+    FragColor.z/=depth;
+    FragColor.x*=8.0;
+    FragColor.y*=8.0;
+    FragColor.z*=8.0;
 
     if(!testHit.hit)
     {
-        discard;
-        //FragColor=vec4(0.0,0.0,0.0,1.0);
+      discard;
+        //  FragColor*=vec4(0.1,0.1,0.1,1.0);
+        //  FragColor.x=sx;
+        //  FragColor.y=sy;
     }
+    float far =100.0;
+    float near=0.01;
+    gl_FragDepth=((far + near) / (far - near)) + ((2 * far * near) / (far - near)) / -depth;
+    //FragColor=vec4(TexCoord,1.0);
 }

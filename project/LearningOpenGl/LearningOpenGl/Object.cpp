@@ -145,11 +145,13 @@ void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
 
 	glm::mat4 inverseMat = glm::inverse(generateTranslationMatrix() * generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
 	//inverseMat = glm::mat4(1.0);
+	glm::mat4 inverseRotMat = glm::inverse(generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
 
     voxelShader.setMat4("model", modelMat);
     voxelShader.setMat4("view", viewMat);
 	voxelShader.setMat4("projection", projectionMat);
 	voxelShader.setMat4("inverseMat", inverseMat);
+	voxelShader.setMat4("inverseRotMat", inverseRotMat);
 	voxelShader.setVec3("voxelSize", float(voxelSize.x), float(voxelSize.y), float(voxelSize.z));
     
 

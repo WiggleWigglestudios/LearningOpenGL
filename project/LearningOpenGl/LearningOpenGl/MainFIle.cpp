@@ -16,7 +16,7 @@
 
 float deltaTime = 0.0f;	
 float lastFrame = 0.0f; 
-Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),3.0);
+Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),1.0);
 
 double lastXPosMouse = 0.0f;
 double lastYPosMouse = 0.0f;
@@ -337,6 +337,7 @@ int main()
         processInputs(window);
 
         glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
         glClearColor(0.2f, 0.1f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -357,7 +358,7 @@ int main()
         
         glfwGetWindowSize(window, &width, &height);
         float fov = glm::radians(60.0f);
-        glm::mat4 projection = glm::perspective(fov, (float)width / (float)height, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(fov, (float)width / (float)height, 0.01f, 100.0f);
 
         basicShader.setMat4("model", model);
         basicShader.setMat4("view", view);
@@ -380,8 +381,20 @@ int main()
         testObject.voxelShader.setVec3("windowSize", float(width), float(height), fov);
         testObject.voxelShader.setVec3("cameraPos", player.pos.x, player.pos.y, player.pos.z);// cubePos.x, cubePos.y, cubePos.z);
         testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x, player.lookDir.y, player.lookDir.z);
-
+        
+        testObject.pos = glm::vec3(0, 0, 0);
+       // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
+        testObject.rotate(5, glm::normalize(glm::vec3(0, 1, 0)));
         testObject.render(view, projection);
+        testObject.rotate(-5, glm::normalize(glm::vec3(0, 1, 0)));
+        testObject.pos = glm::vec3(1, 0, 0);
+        testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
+        testObject.render(view, projection);
+        testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
+        testObject.pos = glm::vec3(-0.5, 0.5, 0);
+       // testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
+        testObject.render(view, projection);
+       // testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
 
 
         glfwSwapBuffers(window);
