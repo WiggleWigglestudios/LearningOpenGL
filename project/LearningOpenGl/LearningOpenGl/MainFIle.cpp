@@ -300,7 +300,7 @@ int main()
         {
             for (int d = 0; d < zSize; d++)
             {
-                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 5)
+                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 5 || (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
                 {
                     voxelData[d * xSize * ySize + c * xSize + i] = 1;
                 }
@@ -325,6 +325,7 @@ int main()
     testObject.createVertexBufferObject();
 
     lastFrame = glfwGetTime();
+    float rot = 0.0;
     while (!glfwWindowShouldClose(window))
     {
         deltaTime = glfwGetTime() - lastFrame;
@@ -340,6 +341,8 @@ int main()
         glDepthFunc(GL_LESS);
         glClearColor(0.2f, 0.1f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+       // glEnable(GL_CULL_FACE);
+        //glCullFace(GL_BACK);
 
         float timeValue = glfwGetTime();
         basicShader.use();
@@ -384,17 +387,18 @@ int main()
         
         testObject.pos = glm::vec3(0, 0, 0);
        // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
-        testObject.rotate(5, glm::normalize(glm::vec3(0, 1, 0)));
+        rot += 1.0 * deltaTime;
+        testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
         testObject.render(view, projection);
-        testObject.rotate(-5, glm::normalize(glm::vec3(0, 1, 0)));
+        testObject.rotate(-rot, glm::normalize(glm::vec3(0, 1, 0)));
         testObject.pos = glm::vec3(1, 0, 0);
         testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
         testObject.render(view, projection);
         testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
         testObject.pos = glm::vec3(-0.5, 0.5, 0);
-       // testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
+      //  testObject.rotate(rot/5.0, glm::normalize(glm::vec3(1, 1, 0)));
         testObject.render(view, projection);
-       // testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
+       // testObject.rotate(-rot/5.0, glm::normalize(glm::vec3(1, 1, 0)));
 
 
         glfwSwapBuffers(window);

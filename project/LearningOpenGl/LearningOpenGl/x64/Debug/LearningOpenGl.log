@@ -2,9 +2,8 @@
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(13,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(14,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(327,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(330,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(331,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(344,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Object.cpp
-  Generating Code...
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(331,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(332,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(347,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(390,20): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   LearningOpenGl.vcxproj -> C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\x64\Debug\LearningOpenGl.exe

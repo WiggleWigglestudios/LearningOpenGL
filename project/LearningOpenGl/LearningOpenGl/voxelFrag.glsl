@@ -61,11 +61,16 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
         stepDists.z=(float(transversePos.z)+1.0-startPos.z)*deltaDist.z;
     }
 
-	if(checkVoxel(vec3(transversePos))>0){
-          outputHit.hit=true;
-          outputHit.hitValue=checkVoxel(transversePos);
-          return outputHit;
+    if(!(transversePos.x<0||transversePos.x>=voxelSize.x||
+        transversePos.y<0||transversePos.y>=voxelSize.y||
+        transversePos.z<0||transversePos.z>=voxelSize.z))
+    {
+	    if(checkVoxel(vec3(transversePos))>0){
+              outputHit.hit=true;
+              outputHit.hitValue=checkVoxel(transversePos);
+              return outputHit;
    
+        }
     }
     
     for(int i=0;i<maxSteps;i++){
@@ -102,14 +107,14 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
             outputRay.dist=travelDist;
         }
         else*/
-        /*
-        if(transversePos.x<0||transversePos.x>voxelSize.x||
-        transversePos.y<0||transversePos.y>voxelSize.y||
-        transversePos.z<0||transversePos.z>voxelSize.z)
+        
+        if(transversePos.x<0||transversePos.x>=voxelSize.x||
+        transversePos.y<0||transversePos.y>=voxelSize.y||
+        transversePos.z<0||transversePos.z>=voxelSize.z)
         {
             //outputHit.hit=false;
            // i=maxSteps;
-        }else*/
+        }else
         if(checkVoxel(vec3(transversePos))>0){
           i=maxSteps;
           outputHit.hit=true;
@@ -140,8 +145,8 @@ void main()
 	newCameraPos.z+=(voxelSize.z/2.0)/8.0;
 
 
-	vec3 newCameraDir=(inverseRotMat*vec4(cameraLookDir,1.0)).xyz;
-	vec3 newCameraRight=(inverseRotMat*vec4(cameraRight,1.0)).xyz;//normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));//(inverseRotMat*vec4(cameraRight,1.0)).xyz;
+	vec3 newCameraDir=normalize((inverseRotMat*vec4(cameraLookDir,1.0)).xyz);
+	vec3 newCameraRight=normalize((inverseRotMat*vec4(cameraRight,1.0)).xyz);//normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));//(inverseRotMat*vec4(cameraRight,1.0)).xyz;
 
 	
 	vec3 safeCoord = clamp(TexCoord, 0.0, 1.0 - 1e-8);
@@ -171,23 +176,26 @@ void main()
     float sx = uv.x * 2.0f - aspect;
     float sy = uv.y * 2.0f - 1.0f;
 
-    vec3 right=normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));
+    vec3 right=normalize(newCameraRight);//normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));
     vec3 up=normalize(cross(right,newCameraDir));
 
 	vec3 rayDir=normalize(newCameraDir+sx * halfWidth * right + sy * halfHeight * up);
 
 	RayHit testHit=castRay(startingPos,rayDir,maxSteps);
-	FragColor=vec4(startingPos/voxelSize,1.0);
+	
+    
+    
+    FragColor=vec4(startingPos/voxelSize,1.0);
     FragColor=vec4(rayDir,1.0);
 
-    float depth=length(newCameraPos-startingPos/8.0)+testHit.travelDist;
+    float depth=length(newCameraPos-startingPos/8.0)+testHit.travelDist/8.0;
 
-    FragColor.x/=depth;
-    FragColor.y/=depth;
-    FragColor.z/=depth;
-    FragColor.x*=8.0;
-    FragColor.y*=8.0;
-    FragColor.z*=8.0;
+  
+  
+  
+    //FragColor.x*=8.0;
+   // FragColor.y*=8.0;
+    //FragColor.z*=8.0;
 
     if(!testHit.hit)
     {
@@ -195,9 +203,24 @@ void main()
         //  FragColor*=vec4(0.1,0.1,0.1,1.0);
         //  FragColor.x=sx;
         //  FragColor.y=sy;
+       // gl_FragDepth=gl_FragCoord.z;
+    }else
+    {
+        FragColor.x=1.0/depth;
+        FragColor.y=1.0/depth;
+        FragColor.z=1.0/depth;     
+        //FragColor.x/=depth;
+        //FragColor.y/=depth;
+        //FragColor.z/=depth;     
+
+        float far =100.0;
+        float near=0.01;
+        float outputDepth=((far + near) / (far - near)) + ((2 * far * near) / (far - near)) / -depth;
+        gl_FragDepth=((far + near) / (far - near)) + ((2 * far * near) / (far - near)) / -depth;
+
+       // FragColor.x=1.0/outputDepth;
+       // FragColor.y=1.0/outputDepth;
+       // FragColor.z=1.0/outputDepth;
     }
-    float far =100.0;
-    float near=0.01;
-    gl_FragDepth=((far + near) / (far - near)) + ((2 * far * near) / (far - near)) / -depth;
     //FragColor=vec4(TexCoord,1.0);
 }
