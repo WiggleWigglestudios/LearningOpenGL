@@ -16,7 +16,7 @@
 
 float deltaTime = 0.0f;	
 float lastFrame = 0.0f; 
-Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),1.0);
+Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),5.0);
 
 double lastXPosMouse = 0.0f;
 double lastYPosMouse = 0.0f;
@@ -289,9 +289,9 @@ int main()
 
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    int xSize = 16;
-    int ySize = 16;
-    int zSize = 16;
+    int xSize = 32;
+    int ySize = 4;
+    int zSize = 32;
 
     std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
     for (int i = 0; i < xSize; i++)
@@ -300,9 +300,9 @@ int main()
         {
             for (int d = 0; d < zSize; d++)
             {
-                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 5 || (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
+                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 50 )//|| (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
                 {
-                    voxelData[d * xSize * ySize + c * xSize + i] = 1;
+                    voxelData[d * xSize * ySize + c * xSize + i] = std::rand()%255+1;
                 }
                 else
                 {
@@ -326,10 +326,21 @@ int main()
 
     lastFrame = glfwGetTime();
     float rot = 0.0;
+    int frameCount = 0;
+    float lastFrameFrameCount = glfwGetTime();
+
     while (!glfwWindowShouldClose(window))
     {
         deltaTime = glfwGetTime() - lastFrame;
         lastFrame = glfwGetTime();
+
+        if (frameCount == 100)
+        {
+            frameCount = 0;
+            std::cout << (100.0/(glfwGetTime()-lastFrameFrameCount)) << std::endl;
+            lastFrameFrameCount = glfwGetTime();
+        }
+        frameCount++;
 
        // testObject.rotate(2 * deltaTime, glm::vec3(0.0, 1.0, 0.00));
        // testObject.rotate(0.5 * deltaTime, glm::vec3(0.0, 0, 1.0));
@@ -388,16 +399,26 @@ int main()
         testObject.pos = glm::vec3(0, 0, 0);
        // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
         rot += 1.0 * deltaTime;
-        testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
-        testObject.render(view, projection);
-        testObject.rotate(-rot, glm::normalize(glm::vec3(0, 1, 0)));
-        testObject.pos = glm::vec3(1, 0, 0);
-        testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
-        testObject.render(view, projection);
-        testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
-        testObject.pos = glm::vec3(-0.5, 0.5, 0);
+       // testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
+        for (int xPos = 0; xPos < 30; xPos++)
+        {
+            for (int yPos = 0; yPos < 1; yPos++)
+            {
+                for (int zPos = 0; zPos < 30; zPos++)
+                {
+                    testObject.pos = glm::vec3(xPos * 4.0,  floor((std::sin(float(xPos)/3.0)+ std::sin(float(zPos) / 3.0))/2.0 *8.0)/8.0, zPos * 4.0);
+                    testObject.render(view, projection);
+                }
+            }
+        }
+        //testObject.rotate(-rot, glm::normalize(glm::vec3(0, 1, 0)));
+       // testObject.pos = glm::vec3(1, 0, 0);
+       // testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
+       // testObject.render(view, projection);
+       // testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
+       // testObject.pos = glm::vec3(-0.5, 0.5, 0);
       //  testObject.rotate(rot/5.0, glm::normalize(glm::vec3(1, 1, 0)));
-        testObject.render(view, projection);
+      //  testObject.render(view, projection);
        // testObject.rotate(-rot/5.0, glm::normalize(glm::vec3(1, 1, 0)));
 
 

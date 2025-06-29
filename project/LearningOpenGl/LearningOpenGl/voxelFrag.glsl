@@ -206,9 +206,9 @@ void main()
        // gl_FragDepth=gl_FragCoord.z;
     }else
     {
-        FragColor.x=1.0/depth;
-        FragColor.y=1.0/depth;
-        FragColor.z=1.0/depth;     
+        FragColor.x=testHit.hitValue/sqrt(depth);
+        FragColor.y=0.0;//1.0/depth;
+        FragColor.z=0.0;//1.0/depth;     
         //FragColor.x/=depth;
         //FragColor.y/=depth;
         //FragColor.z/=depth;     
