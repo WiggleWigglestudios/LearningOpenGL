@@ -28,6 +28,13 @@ float checkVoxel(vec3 checkPos)
 	return texture(volumeTexture,checkPos/voxelSize).r;
 }
 
+//if there is a voxel (checkVoxel>0) and the voxel is not transparent (checkVoxel*256>252 and (fragCoord.x+fragCoord.y%2)%2==0)
+bool voxelHit(vec3 checkPos)
+{
+    int voxelValue=int(checkVoxel(checkPos)*256);
+    return (voxelValue>0&&!(voxelValue>=252&& ((int(gl_FragCoord.x)+int(gl_FragCoord.y)%2)%2)==0 ));
+}
+
 RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
 {
 	RayHit outputHit;
@@ -65,7 +72,7 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
         transversePos.y<0||transversePos.y>=voxelSize.y||
         transversePos.z<0||transversePos.z>=voxelSize.z))
     {
-	    if(checkVoxel(vec3(transversePos))>0){
+	    if(voxelHit(vec3(transversePos))){
               outputHit.hit=true;
               outputHit.hitValue=checkVoxel(transversePos);
               return outputHit;
@@ -115,7 +122,7 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
             //outputHit.hit=false;
            // i=maxSteps;
         }else
-        if(checkVoxel(vec3(transversePos))>0){
+        if(voxelHit(vec3(transversePos))){
           i=maxSteps;
           outputHit.hit=true;
           outputHit.hitValue=checkVoxel(transversePos);
@@ -206,7 +213,7 @@ void main()
        // gl_FragDepth=gl_FragCoord.z;
     }else
     {
-        FragColor.x=testHit.hitValue/sqrt(depth);
+        FragColor.x=testHit.hitValue;//(depth);
         FragColor.y=0.0;//1.0/depth;
         FragColor.z=0.0;//1.0/depth;     
         //FragColor.x/=depth;

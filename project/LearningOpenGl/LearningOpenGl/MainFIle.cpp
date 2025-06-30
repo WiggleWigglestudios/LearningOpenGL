@@ -290,7 +290,7 @@ int main()
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
     int xSize = 32;
-    int ySize = 4;
+    int ySize = 32;
     int zSize = 32;
 
     std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
@@ -300,7 +300,11 @@ int main()
         {
             for (int d = 0; d < zSize; d++)
             {
-                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 50 )//|| (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
+                if (glm::distance(glm::vec2(float(i), float(d)), glm::vec2(float(xSize) / 2.0, float(zSize) / 2.0)) < 5.0)
+                {
+                    voxelData[d * xSize * ySize + c * xSize + i] = 255;
+                }else
+                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 15 )//|| (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
                 {
                     voxelData[d * xSize * ySize + c * xSize + i] = std::rand()%255+1;
                 }
@@ -362,7 +366,7 @@ int main()
         glm::vec3 cubePos = player.pos +(player.lookDir);
        // printVec3(cubePos);
        // printVec3(player.pos);
-        glm::mat4 model = glm::translate(glm::mat4(1.0), cubePos) * glm::scale(glm::mat4(1.0),glm::vec3(0.05,0.05,0.05));
+        glm::mat4 model = glm::translate(glm::mat4(1.0), cubePos) * glm::scale(glm::mat4(1.0),glm::vec3(1.0/16.0, 1.0 / 16.0, 1.0 /16.0));
          model = glm::rotate(model, glm::radians(timeValue * 100), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(timeValue * 30), glm::vec3(0.0f, 1.0f, 0.0f));
         
@@ -400,14 +404,18 @@ int main()
        // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
         rot += 1.0 * deltaTime;
        // testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
-        for (int xPos = 0; xPos < 30; xPos++)
+        for (int xPos = 0; xPos < 5; xPos++)
         {
-            for (int yPos = 0; yPos < 1; yPos++)
+            for (int yPos = 0; yPos < 5; yPos++)
             {
-                for (int zPos = 0; zPos < 30; zPos++)
+                for (int zPos = 0; zPos < 5; zPos++)
                 {
-                    testObject.pos = glm::vec3(xPos * 4.0,  floor((std::sin(float(xPos)/3.0)+ std::sin(float(zPos) / 3.0))/2.0 *8.0)/8.0, zPos * 4.0);
+                   // testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 + floor((std::sin(float(xPos) / 3.0) + std::sin(float(zPos) / 3.0)) / 2.0 * 8.0) / 8.0, zPos * 4.0);
+                    
+                    testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
+                    testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 , zPos * 4.0);
                     testObject.render(view, projection);
+                    testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
                 }
             }
         }
