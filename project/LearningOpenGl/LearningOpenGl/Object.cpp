@@ -31,7 +31,7 @@ void Object::updateVolumeTexture()
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
 
-	if (voxelData.size() == voxelSize.x*voxelSize.y*voxelSize.z)
+	if (voxelData.size() == voxelSize.x * voxelSize.y * voxelSize.z)
 	{
 		glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, voxelSize.x, voxelSize.y, voxelSize.z,
 			0, GL_RED, GL_UNSIGNED_BYTE, voxelData.data());
@@ -39,10 +39,32 @@ void Object::updateVolumeTexture()
 	else
 	{
 		std::cout << "incorrect voxel data size. can't update volume texture" << std::endl;
-		std::cout << voxelData.size()<<" vs the expected " << voxelSize.x * voxelSize.y * voxelSize.z << std::endl;
+		std::cout << voxelData.size() << " vs the expected " << voxelSize.x * voxelSize.y * voxelSize.z << std::endl;
 	}
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+}
 
+void Object::updatePaletteTexture()
+{
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &paletteTexture);
+	glBindTexture(GL_TEXTURE_2D, paletteTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	if (voxelPalatte.size() == 256*4)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1,
+			0, GL_RGBA, GL_UNSIGNED_BYTE, voxelPalatte.data());
+	}
+	else
+	{
+		std::cout << "incorrect palette data size. can't update palette texture" << std::endl;
+		std::cout << voxelPalatte.size() << " vs the expected " << (256*4) << std::endl;
+	}
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 }
 
 void Object::createVertexBufferObject()
@@ -137,7 +159,8 @@ void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
 {
 
     voxelShader.use();
-    voxelShader.setInt("volumeTexture", 0);
+	voxelShader.setInt("volumeTexture", 0);
+	voxelShader.setInt("paletteTexture", 1);
 
 
 
@@ -155,8 +178,10 @@ void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
 	voxelShader.setVec3("voxelSize", float(voxelSize.x), float(voxelSize.y), float(voxelSize.z));
     
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_3D, volumeTexture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_3D, volumeTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, paletteTexture);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 3 * 2 * 6, GL_UNSIGNED_INT, 0);

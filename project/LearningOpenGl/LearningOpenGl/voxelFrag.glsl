@@ -8,6 +8,7 @@ in vec3 TexCoord;
 in vec4 gl_FragCoord;
 
 uniform sampler3D volumeTexture;
+uniform sampler2D paletteTexture;
 uniform vec3 windowSize; //width, height, fov
 uniform vec3 cameraPos;
 uniform vec3 cameraLookDir;
@@ -31,8 +32,10 @@ float checkVoxel(vec3 checkPos)
 //if there is a voxel (checkVoxel>0) and the voxel is not transparent (checkVoxel*256>252 and (fragCoord.x+fragCoord.y%2)%2==0)
 bool voxelHit(vec3 checkPos)
 {
-    int voxelValue=int(checkVoxel(checkPos)*256);
-    return (voxelValue>0&&!(voxelValue>=252&& ((int(gl_FragCoord.x)+int(gl_FragCoord.y)%2)%2)==0 ));
+    int voxelValue=int(checkVoxel(checkPos)*255);
+    int trans=(voxelValue&3)+2;
+    bool transparent=(((int(gl_FragCoord.x)+int(gl_FragCoord.y)%trans)%trans)==0);
+    return (voxelValue>0&&!(voxelValue>=252 && !transparent));
 }
 
 RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
@@ -219,6 +222,9 @@ void main()
         //FragColor.x/=depth;
         //FragColor.y/=depth;
         //FragColor.z/=depth;     
+
+        //FragColor.y=texture(paletteTexture,vec2(testHit.hitValue,0.0)).y;
+        FragColor=vec4(texture(paletteTexture,vec2(testHit.hitValue,0.0)).xyz,1.0);
 
         float far =100.0;
         float near=0.01;

@@ -289,9 +289,9 @@ int main()
 
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    int xSize = 32;
-    int ySize = 32;
-    int zSize = 32;
+    int xSize = 64;
+    int ySize = 64;
+    int zSize = 64;
 
     std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
     for (int i = 0; i < xSize; i++)
@@ -303,10 +303,11 @@ int main()
                 if (glm::distance(glm::vec2(float(i), float(d)), glm::vec2(float(xSize) / 2.0, float(zSize) / 2.0)) < 5.0)
                 {
                     voxelData[d * xSize * ySize + c * xSize + i] = 255;
-                }else
-                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 15 )//|| (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
+                }
+                else
+                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 40 )//|| (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
                 {
-                    voxelData[d * xSize * ySize + c * xSize + i] = std::rand()%255+1;
+                    voxelData[d * xSize * ySize + c * xSize + i] =std::rand()%255+1;
                 }
                 else
                 {
@@ -318,14 +319,27 @@ int main()
             
         }
     }
-    std::vector<unsigned char> voxelPalatte(256*4,0);
+    std::vector<unsigned char> voxelPalatte(256*4,0); 
+    //first byte is red, second byte is green third byte is blue, fourth bye first two bits are emission, 2nd two bits are metalic, 
+    //last for indices are transparent automatically 
     voxelPalatte[4] = 255;
     voxelPalatte[5] = 255;
     voxelPalatte[6] = 255;
     voxelPalatte[7] = 255;
+
+    for (int i = 1; i < 256; i++)
+    {
+        int col = std::rand() % 256;
+        voxelPalatte[i*4+0] = std::rand() % 256;
+        voxelPalatte[i*4+1] = std::rand() % 256;
+        voxelPalatte[i*4+2] = std::rand() % 256;
+        voxelPalatte[i*4+3] = std::rand() % 256;
+    }
+
     Object testObject = Object(glm::vec3(0 , 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), voxelData,glm::vec3(xSize,ySize,zSize), voxelPalatte);
     testObject.updateShader(voxelShader);
     testObject.updateVolumeTexture();
+    testObject.updatePaletteTexture();
     testObject.createVertexBufferObject();
 
     lastFrame = glfwGetTime();
@@ -404,18 +418,18 @@ int main()
        // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
         rot += 1.0 * deltaTime;
        // testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
-        for (int xPos = 0; xPos < 5; xPos++)
+        for (int xPos = 0; xPos < 11; xPos++)
         {
-            for (int yPos = 0; yPos < 5; yPos++)
+            for (int yPos = 0; yPos < 1; yPos++)
             {
-                for (int zPos = 0; zPos < 5; zPos++)
+                for (int zPos = 0; zPos < 11; zPos++)
                 {
                    // testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 + floor((std::sin(float(xPos) / 3.0) + std::sin(float(zPos) / 3.0)) / 2.0 * 8.0) / 8.0, zPos * 4.0);
                     
-                    testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
-                    testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 , zPos * 4.0);
+                  //  testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
+                    testObject.pos = glm::vec3(xPos * 8.0, yPos * 8.0 , zPos * 8.0);
                     testObject.render(view, projection);
-                    testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
+                  //  testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
                 }
             }
         }
