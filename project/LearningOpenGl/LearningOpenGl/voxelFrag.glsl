@@ -26,7 +26,7 @@ struct RayHit
 
 float checkVoxel(vec3 checkPos)
 {
-	return texture(volumeTexture,checkPos/voxelSize).r;
+	return texture(volumeTexture,checkPos/voxelSize+vec3(0.01,0.01,0.01)).r;
 }
 
 //if there is a voxel (checkVoxel>0) and the voxel is not transparent (checkVoxel*256>252 and (fragCoord.x+fragCoord.y%2)%2==0)
@@ -219,12 +219,16 @@ void main()
         FragColor.x=testHit.hitValue;//(depth);
         FragColor.y=0.0;//1.0/depth;
         FragColor.z=0.0;//1.0/depth;     
-        //FragColor.x/=depth;
-        //FragColor.y/=depth;
-        //FragColor.z/=depth;     
+        FragColor.x/=depth;
+        FragColor.y/=depth;
+        FragColor.z/=depth;     
 
         //FragColor.y=texture(paletteTexture,vec2(testHit.hitValue,0.0)).y;
         FragColor=vec4(texture(paletteTexture,vec2(testHit.hitValue,0.0)).xyz,1.0);
+
+        FragColor.x/=sqrt(depth);
+        FragColor.y/=sqrt(depth);
+        FragColor.z/=sqrt(depth); 
 
         float far =100.0;
         float near=0.01;

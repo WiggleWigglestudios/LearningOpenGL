@@ -1,5 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#define OGT_VOX_IMPLEMENTATION
+#include "ogt_vox.h";
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -101,6 +103,31 @@ void printMat4(glm::mat4 _matrix )
 std::string readAllText(const std::string& filePath) {
     std::ifstream inFile(filePath);
     return std::string(std::istreambuf_iterator<char>(inFile), {});
+}
+
+
+
+uint8_t* loadFileBytes(const std::string& filename, std::size_t& outSize) {
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+    if (!file) {
+        std::cerr << "Failed to open file: " << filename << '\n';
+        outSize = 0;
+        return nullptr;
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    uint8_t* buffer = new uint8_t[size];
+    if (!file.read(reinterpret_cast<char*>(buffer), size)) {
+        std::cerr << "Failed to read file: " << filename << '\n';
+        delete[] buffer;
+        outSize = 0;
+        return nullptr;
+    }
+
+    outSize = static_cast<std::size_t>(size);
+    return buffer;
 }
 
 
@@ -287,14 +314,31 @@ int main()
     basicShader.setInt("texture2", 1);
 
 
+
+
+
+
+
+
+
+
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
-    int xSize = 64;
-    int ySize = 64;
-    int zSize = 64;
 
-    std::vector<unsigned char> voxelData(xSize *ySize*zSize, 0);
-    for (int i = 0; i < xSize; i++)
+
+    std::size_t voxelFileDataSize = 0;
+    uint8_t* voxelFileData = loadFileBytes("vox\\military_truck_green.vox", voxelFileDataSize);
+    //50 31 1
+    const ogt_vox_scene* scene = ogt_vox_read_scene(voxelFileData, voxelFileDataSize);
+
+    int modelNumber = 0;
+    const ogt_vox_model* model= scene->models[modelNumber];
+    int xSize = model->size_x;
+    int ySize = model->size_y;
+    int zSize = model->size_z;
+    std::cout << xSize << " " << ySize << " " << zSize << std::endl;
+    std::vector<unsigned char> voxelData(xSize*ySize*zSize, 0);
+   /* for (int i = 0; i < xSize; i++)
     {
         for (int c = 0; c < ySize; c++)
         {
@@ -315,10 +359,27 @@ int main()
                     // i % 2;// d* xSize* ySize + c * xSize + i;
                 }
 
+                //voxelData[d * xSize * ySize + c * xSize + i] = scene->models[modelNumber]->voxel_data[d * xSize * ySize + c * xSize + i];
             }
             
         }
+    }*/
+    int voxelIndex = 0;
+    for (int z = 0; z < zSize; z++)
+    {
+        for (int y = 0; y < ySize; y++)
+        {
+            for (int x = 0; x < xSize; x++, voxelIndex++)
+            {
+                voxelIndex=(x)%xSize+
+                    ((y) % ySize)*xSize+
+                    ((z) % zSize)*xSize*ySize;
+                voxelData[x + (y * xSize) + (z * xSize * ySize)]= model->voxel_data[voxelIndex];
+                
+            }
+        }
     }
+
     std::vector<unsigned char> voxelPalatte(256*4,0); 
     //first byte is red, second byte is green third byte is blue, fourth bye first two bits are emission, 2nd two bits are metalic, 
     //last for indices are transparent automatically 
@@ -336,11 +397,35 @@ int main()
         voxelPalatte[i*4+3] = std::rand() % 256;
     }
 
+
+
+
+    // the buffer can be safely deleted once the scene is instantiated.
+
+    for (int i = 0; i < 256; i++)
+    {
+       // std::cout << i << " r " << int(scene->palette.color[i].r) << " g " << int(scene->palette.color[i].g) << " b " << int(scene->palette.color[i].b) << std::endl;
+        voxelPalatte[i * 4 + 0] = int(scene->palette.color[i].r);
+        voxelPalatte[i * 4 + 1] = int(scene->palette.color[i].g);
+        voxelPalatte[i * 4 + 2] = int(scene->palette.color[i].b);
+        voxelPalatte[i * 4 + 3] = 255;
+    }
+
+//    scene->models[0]->voxel_data[0];
+    ogt_vox_destroy_scene(scene);
+
+
     Object testObject = Object(glm::vec3(0 , 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), voxelData,glm::vec3(xSize,ySize,zSize), voxelPalatte);
     testObject.updateShader(voxelShader);
     testObject.updateVolumeTexture();
     testObject.updatePaletteTexture();
     testObject.createVertexBufferObject();
+
+
+
+   
+    
+    
 
     lastFrame = glfwGetTime();
     float rot = 0.0;
