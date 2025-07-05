@@ -1562,7 +1562,7 @@
                         // read this many voxels and store it in voxel data.
                         const uint8_t * packed_voxel_data = (const uint8_t*)_vox_file_data_pointer(fp);
                         const uint32_t voxels_to_read = _vox_min(_vox_file_bytes_remaining(fp) / 4, num_voxels_in_chunk);
-                        std::cout << _vox_file_bytes_remaining(fp) / 4 << " " << num_voxels_in_chunk << std::endl;
+                        //std::cout << _vox_file_bytes_remaining(fp) / 4 << " " << num_voxels_in_chunk << std::endl;
                         for (uint32_t i = 0; i < voxels_to_read; i++) {
                             uint8_t x = packed_voxel_data[i * 4 + 0];
                             uint8_t y = packed_voxel_data[i * 4 + 1];

@@ -325,101 +325,30 @@ int main()
     Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
 
 
-
-    std::size_t voxelFileDataSize = 0;
-    uint8_t* voxelFileData = loadFileBytes("vox\\military_truck_green.vox", voxelFileDataSize);
-    //50 31 1
-    const ogt_vox_scene* scene = ogt_vox_read_scene(voxelFileData, voxelFileDataSize);
-
-    int modelNumber = 0;
-    const ogt_vox_model* model= scene->models[modelNumber];
-    int xSize = model->size_x;
-    int ySize = model->size_y;
-    int zSize = model->size_z;
-    std::cout << xSize << " " << ySize << " " << zSize << std::endl;
-    std::vector<unsigned char> voxelData(xSize*ySize*zSize, 0);
-   /* for (int i = 0; i < xSize; i++)
-    {
-        for (int c = 0; c < ySize; c++)
-        {
-            for (int d = 0; d < zSize; d++)
-            {
-                if (glm::distance(glm::vec2(float(i), float(d)), glm::vec2(float(xSize) / 2.0, float(zSize) / 2.0)) < 5.0)
-                {
-                    voxelData[d * xSize * ySize + c * xSize + i] = 255;
-                }
-                else
-                if (glm::distance(glm::vec3(float(i), float(c), float(d)), glm::vec3(float(xSize) / 2.0, float(ySize) / 2.0, float(zSize) / 2.0))< 40 )//|| (i == xSize / 2 && d == zSize / 2) || (i == xSize / 2 && c == ySize / 2) || (c == ySize / 2 && d == zSize / 2))
-                {
-                    voxelData[d * xSize * ySize + c * xSize + i] =std::rand()%255+1;
-                }
-                else
-                {
-                    voxelData[d * xSize * ySize + c * xSize + i] = 0;
-                    // i % 2;// d* xSize* ySize + c * xSize + i;
-                }
-
-                //voxelData[d * xSize * ySize + c * xSize + i] = scene->models[modelNumber]->voxel_data[d * xSize * ySize + c * xSize + i];
-            }
-            
-        }
-    }*/
-    int voxelIndex = 0;
-    for (int z = 0; z < zSize; z++)
-    {
-        for (int y = 0; y < ySize; y++)
-        {
-            for (int x = 0; x < xSize; x++, voxelIndex++)
-            {
-                voxelIndex=(x)%xSize+
-                    ((y) % ySize)*xSize+
-                    ((z) % zSize)*xSize*ySize;
-                voxelData[x + (y * xSize) + (z * xSize * ySize)]= model->voxel_data[voxelIndex];
-                
-            }
-        }
-    }
-
-    std::vector<unsigned char> voxelPalatte(256*4,0); 
-    //first byte is red, second byte is green third byte is blue, fourth bye first two bits are emission, 2nd two bits are metalic, 
-    //last for indices are transparent automatically 
-    voxelPalatte[4] = 255;
-    voxelPalatte[5] = 255;
-    voxelPalatte[6] = 255;
-    voxelPalatte[7] = 255;
-
-    for (int i = 1; i < 256; i++)
-    {
-        int col = std::rand() % 256;
-        voxelPalatte[i*4+0] = std::rand() % 256;
-        voxelPalatte[i*4+1] = std::rand() % 256;
-        voxelPalatte[i*4+2] = std::rand() % 256;
-        voxelPalatte[i*4+3] = std::rand() % 256;
-    }
-
-
-
-
-    // the buffer can be safely deleted once the scene is instantiated.
-
-    for (int i = 0; i < 256; i++)
-    {
-       // std::cout << i << " r " << int(scene->palette.color[i].r) << " g " << int(scene->palette.color[i].g) << " b " << int(scene->palette.color[i].b) << std::endl;
-        voxelPalatte[i * 4 + 0] = int(scene->palette.color[i].r);
-        voxelPalatte[i * 4 + 1] = int(scene->palette.color[i].g);
-        voxelPalatte[i * 4 + 2] = int(scene->palette.color[i].b);
-        voxelPalatte[i * 4 + 3] = 255;
-    }
-
-//    scene->models[0]->voxel_data[0];
-    ogt_vox_destroy_scene(scene);
-
-
-    Object testObject = Object(glm::vec3(0 , 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), voxelData,glm::vec3(xSize,ySize,zSize), voxelPalatte);
+    Object testObject = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\generic_sedan_red.vox", 1);
     testObject.updateShader(voxelShader);
     testObject.updateVolumeTexture();
     testObject.updatePaletteTexture();
     testObject.createVertexBufferObject();
+
+
+    Object testObject2 = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\generic_sedan_red.vox", 0);
+    testObject2.updateShader(voxelShader);
+    testObject2.updateVolumeTexture();
+    testObject2.updatePaletteTexture();
+    testObject2.createVertexBufferObject();
+
+    Object testObject3 = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\tree_birch.vox", 0);
+    testObject3.updateShader(voxelShader);
+    testObject3.updateVolumeTexture();
+    testObject3.updatePaletteTexture();
+    testObject3.createVertexBufferObject();
+
+    Object testObject4 = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\tree_birch.vox", 1);
+    testObject4.updateShader(voxelShader);
+    testObject4.updateVolumeTexture();
+    testObject4.updatePaletteTexture();
+    testObject4.createVertexBufferObject();
 
 
 
@@ -500,9 +429,38 @@ int main()
         testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x, player.lookDir.y, player.lookDir.z);
         
         testObject.pos = glm::vec3(0, 0, 0);
+        testObject.rotate(3.14159265359/2, glm::normalize(glm::vec3(1, 0, 0)));
+        testObject.render(view, projection);
+        testObject.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
+        testObject2.pos = glm::vec3(-1.0, -0.5, 1.6);
+        testObject2.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
+        testObject2.render(view, projection);
+        testObject2.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
+
+
+        testObject3.pos = glm::vec3(-3.0/8.0, 7.5+1.0/8.0, 10.0+1.0/8.0);
+        testObject3.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
+        testObject3.render(view, projection);
+        testObject3.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
+
+        testObject4.pos = glm::vec3(0.0, 0.0, 10.0);
+        testObject4.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
+        testObject4.render(view, projection);
+        testObject4.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
+
+
        // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
         rot += 1.0 * deltaTime;
        // testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
+        glm::vec3 spacing = testObject.voxelSize;
+        
+        spacing.x += 1.0;
+        spacing.y += 1.0;
+        spacing.z += 1.0;
+
+        spacing.x /= 8.0;
+        spacing.y /= 8.0;
+        spacing.z /= 8.0;
         for (int xPos = 0; xPos < 11; xPos++)
         {
             for (int yPos = 0; yPos < 1; yPos++)
@@ -512,9 +470,9 @@ int main()
                    // testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 + floor((std::sin(float(xPos) / 3.0) + std::sin(float(zPos) / 3.0)) / 2.0 * 8.0) / 8.0, zPos * 4.0);
                     
                   //  testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
-                    testObject.pos = glm::vec3(xPos * 8.0, yPos * 8.0 , zPos * 8.0);
-                    testObject.render(view, projection);
-                  //  testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
+                    //testObject.pos = glm::vec3(xPos * spacing.x, yPos * spacing.y , zPos * spacing.z);
+                   // testObject.render(view, projection);
+                   // testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
                 }
             }
         }

@@ -1,13 +1,15 @@
 #pragma once
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <vector>
+#include <string>
+#include <iterator>
 #include "Shader.h"
+#include <fstream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <vector>
 
 
 class Object
@@ -30,8 +32,33 @@ public:
 	unsigned int volumeTexture;
 	unsigned int paletteTexture;
 
+	uint8_t* loadFileBytes(const std::string& filename, std::size_t& outSize) {
+		std::ifstream file(filename, std::ios::binary | std::ios::ate);
+		if (!file) {
+			std::cerr << "Failed to open file: " << filename << '\n';
+			outSize = 0;
+			return nullptr;
+		}
+
+		std::streamsize size = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		uint8_t* buffer = new uint8_t[size];
+		if (!file.read(reinterpret_cast<char*>(buffer), size)) {
+			std::cerr << "Failed to read file: " << filename << '\n';
+			delete[] buffer;
+			outSize = 0;
+			return nullptr;
+		}
+
+		outSize = static_cast<std::size_t>(size);
+		return buffer;
+	}
+
 	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 		glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte);
+
+	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::string fileName,int modelNumber);
 
 	void updateShader(Shader inputShader);
 

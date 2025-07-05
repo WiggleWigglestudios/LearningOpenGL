@@ -1,5 +1,5 @@
 #include "Object.h"
-
+#include "ogt_vox.h";
 
 Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 	glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte)
@@ -19,6 +19,77 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	}
 	voxelSize = _voxelSize;
 }
+
+
+
+Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::string fileName, int modelNumber)
+{
+	pos = spawnPos;
+	forwardDir = spawnForwardDir;
+	upDir = spawnUpDir;
+	std::size_t voxelFileDataSize = 0;
+	uint8_t* voxelFileData = loadFileBytes(fileName, voxelFileDataSize);
+	if (voxelFileDataSize >0)
+	{
+		const ogt_vox_scene* scene = ogt_vox_read_scene(voxelFileData, voxelFileDataSize);
+		if (modelNumber < scene->num_models)
+		{
+			const ogt_vox_model* model= scene->models[modelNumber];
+			int xSize = model->size_x;
+			int ySize = model->size_y;
+			int zSize = model->size_z;
+			voxelData.resize(xSize * ySize * zSize);
+			std::cout << xSize <<" " << ySize<<" " << zSize <<" " <<voxelData.size()<< std::endl;
+			//std::vector<unsigned char> voxelData(xSize * ySize * zSize, 0);
+			int voxelIndex = 0;
+			for (int z = 0; z < zSize; z++)
+			{
+				for (int y = 0; y < ySize; y++)
+				{
+					for (int x = 0; x < xSize; x++, voxelIndex++)
+					{
+						 voxelIndex = (x) % xSize +
+							 ((y) % ySize)*xSize+
+							 ((z) % zSize)*xSize*ySize;
+						 voxelData[x + (y * xSize) + (z * xSize * ySize)]= model->voxel_data[voxelIndex];
+						 if (voxelData[x + (y * xSize) + (z * xSize * ySize)] == 1)
+						 {
+							 voxelData[x + (y * xSize) + (z * xSize * ySize)] = 252;
+						 }
+
+					}
+				}
+			}
+			voxelPalatte.resize(256 * 4);
+			//std::vector<unsigned char> voxelPalatte(256 * 4, 0);
+			for (int i = 0; i < 256; i++)
+			{
+				voxelPalatte[i * 4 + 0] = int(scene->palette.color[i].r);
+				voxelPalatte[i * 4 + 1] = int(scene->palette.color[i].g);
+				voxelPalatte[i * 4 + 2] = int(scene->palette.color[i].b);
+				voxelPalatte[i * 4 + 3] = 255;
+			}
+
+			voxelPalatte[252 * 4 + 0] = 90;// voxelPalatte[1 * 4 + 0];
+			voxelPalatte[252 * 4 + 1] = 140;// voxelPalatte[1 * 4 + 1];
+			voxelPalatte[252 * 4 + 2] = 255;// voxelPalatte[1 * 4 + 2];
+
+			ogt_vox_destroy_scene(scene);
+
+			voxelSize = glm::i8vec3(xSize, ySize, zSize);
+		}
+		else
+		{
+			std::cout << "can't load model " <<modelNumber<<" from " << fileName << std::endl;
+		}
+	}
+	else
+	{
+		std::cout << "can't load " << fileName << std::endl;
+	}
+}
+
+
 
 void Object::updateVolumeTexture()
 {
