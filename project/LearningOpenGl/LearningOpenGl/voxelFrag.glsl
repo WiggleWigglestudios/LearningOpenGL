@@ -22,11 +22,12 @@ struct RayHit
 	bool hit;
 	float hitValue;
     float travelDist;
+    vec3 hitNormal;
 };
 
 float checkVoxel(vec3 checkPos)
 {
-	return texture(volumeTexture,checkPos/voxelSize+vec3(0.01,0.01,0.01)).r;
+	return texture(volumeTexture,checkPos/voxelSize+vec3(0.003,0.003,0.003)).r;
 }
 
 //if there is a voxel (checkVoxel>0) and the voxel is not transparent (checkVoxel*256>252 and (fragCoord.x+fragCoord.y%2)%2==0)
@@ -45,6 +46,7 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
     outputHit.hit=false;
     outputHit.hitValue=0.0;
 	outputHit.travelDist=0.0;
+    outputHit.hitNormal=vec3(1.0,0.0,0.0);
 
     ivec3 transversePos=ivec3(startPos);
 	ivec3 stepDirs = ivec3(sign(rayDir));
@@ -89,26 +91,26 @@ RayHit castRay(vec3 startPos,vec3 rayDir,int maxSteps)
                 outputHit.travelDist=stepDists.x;
                 stepDists.x+=deltaDist.x;
                 transversePos.x+=stepDirs.x;
-                //outputRay.normalDir=vec3(-stepDirs.x,0,0);
+                outputHit.hitNormal=vec3(-stepDirs.x,0,0);
                 //outputRay.reflectionMult=vec3(-1,1,1);
             }else{
                 outputHit.travelDist=stepDists.z;
                 stepDists.z+=deltaDist.z;
                 transversePos.z+=stepDirs.z;
-                //outputRay.normalDir=vec3(0,0,-stepDirs.z);
+                outputHit.hitNormal=vec3(0,0,-stepDirs.z);
                 //outputRay.reflectionMult=vec3(1,1,-1);
             }
         }else if(stepDists.y<stepDists.z){
             outputHit.travelDist=stepDists.y;
             stepDists.y+=deltaDist.y;
             transversePos.y+=stepDirs.y;
-            //outputRay.normalDir=vec3(0,-stepDirs.y,0);
+            outputHit.hitNormal=vec3(0,-stepDirs.y,0);
             //outputRay.reflectionMult=vec3(1,-1,1);
         }else{
             outputHit.travelDist=stepDists.z;
             stepDists.z+=deltaDist.z;
             transversePos.z+=stepDirs.z;
-            //outputRay.normalDir=vec3(0,0,-stepDirs.z);
+            outputHit.hitNormal=vec3(0,0,-stepDirs.z);
             //outputRay.reflectionMult=vec3(1,1,-1);
         }
         
@@ -154,9 +156,14 @@ void main()
 	newCameraPos.y+=(voxelSize.y/2.0)/8.0;
 	newCameraPos.z+=(voxelSize.z/2.0)/8.0;
 
-
-	vec3 newCameraDir=normalize((inverseRotMat*vec4(cameraLookDir,1.0)).xyz);
-	vec3 newCameraRight=normalize((inverseRotMat*vec4(cameraRight,1.0)).xyz);//normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));//(inverseRotMat*vec4(cameraRight,1.0)).xyz;
+    mat4 RotMatInverse=inverseMat;
+    RotMatInverse[0].w=0;
+    RotMatInverse[1].w=0;
+    RotMatInverse[2].w=0;
+    RotMatInverse[3]=vec4(0,0,0,1);
+    //inverseRotMat
+	vec3 newCameraDir=normalize((RotMatInverse*vec4(cameraLookDir,1.0)).xyz);
+	vec3 newCameraRight=normalize((RotMatInverse*vec4(cameraRight,1.0)).xyz);//normalize(cross(newCameraDir,vec3(0.0,1.0,0.0)));//(inverseRotMat*vec4(cameraRight,1.0)).xyz;
 
 	
 	vec3 safeCoord = clamp(TexCoord, 0.0, 1.0 - 1e-8);
@@ -225,10 +232,17 @@ void main()
 
         //FragColor.y=texture(paletteTexture,vec2(testHit.hitValue,0.0)).y;
         FragColor=vec4(texture(paletteTexture,vec2(testHit.hitValue,0.0)).xyz,1.0);
+        FragColor=vec4(abs(testHit.hitNormal),1.0);
+       // FragColor.x*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
+       // FragColor.y*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
+       // FragColor.z*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
+        
 
-        FragColor.x/=sqrt(depth);
-        FragColor.y/=sqrt(depth);
-        FragColor.z/=sqrt(depth); 
+       //FragColor.x/=depth;//sqrt(depth);
+       //FragColor.y/=depth;//sqrt(depth);
+       //FragColor.z/=depth;//sqrt(depth); 
+
+        //FragColor=FragColor*(1-depth/100)+vec4(0.2f, 0.1f, 0.5f, 1.0f)*(depth/100);
 
         float far =100.0;
         float near=0.01;

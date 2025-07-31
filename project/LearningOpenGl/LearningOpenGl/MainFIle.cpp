@@ -18,7 +18,7 @@
 
 float deltaTime = 0.0f;	
 float lastFrame = 0.0f; 
-Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),5.0);
+Player player = Player(glm::vec3(0, 0, -3), glm::vec3(0, 0, 1),20.0);
 
 double lastXPosMouse = 0.0f;
 double lastYPosMouse = 0.0f;
@@ -350,11 +350,27 @@ int main()
     testObject4.updatePaletteTexture();
     testObject4.createVertexBufferObject();
 
-
-
+    int terrainImageWidth, terrainImageHeight, terrainImageChannel;
+    unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
+   // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
    
-    
-    
+   
+    std::vector<Object> terrainObjects;
+    int voxelCount = 0;
+    for (int x = 0; x < 16; x++)
+    {
+        for (int y = 0; y < 16; y++)
+        {
+            Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), terrainImageData, terrainImageWidth, terrainImageHeight, terrainImageChannel, 0, x * 64, y * 64, 64.0);// 128.0);
+            terrainObject.updateShader(voxelShader);
+            terrainObject.updateVolumeTexture();
+            terrainObject.updatePaletteTexture();
+            terrainObject.createVertexBufferObject();
+            terrainObjects.push_back(terrainObject);
+            voxelCount += terrainObject.voxelSize.x * terrainObject.voxelSize.y * terrainObject.voxelSize.z;
+        }
+    }
+    std::cout << "terrain voxel count " << voxelCount << std::endl;
 
     lastFrame = glfwGetTime();
     float rot = 0.0;
@@ -432,11 +448,11 @@ int main()
         testObject.rotate(3.14159265359/2, glm::normalize(glm::vec3(1, 0, 0)));
         testObject.render(view, projection);
         testObject.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-        testObject2.pos = glm::vec3(-1.0, -0.5, 1.6);
+        testObject2.pos = glm::vec3(-1.0, -0.6, 1.6);
         testObject2.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
         testObject2.render(view, projection);
         testObject2.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
-
+        
 
         testObject3.pos = glm::vec3(-3.0/8.0, 7.5+1.0/8.0, 10.0+1.0/8.0);
         testObject3.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
@@ -469,12 +485,16 @@ int main()
                 {
                    // testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 + floor((std::sin(float(xPos) / 3.0) + std::sin(float(zPos) / 3.0)) / 2.0 * 8.0) / 8.0, zPos * 4.0);
                     
-                  //  testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
-                    //testObject.pos = glm::vec3(xPos * spacing.x, yPos * spacing.y , zPos * spacing.z);
+                    //testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
+                    //testObject.pos = glm::vec3(xPos * glm::max(spacing.x, glm::max(spacing.z, spacing.y)), yPos * glm::max(spacing.x, glm::max(spacing.z, spacing.y)), zPos * glm::max(spacing.x, glm::max(spacing.z, spacing.y)));
                    // testObject.render(view, projection);
                    // testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
                 }
             }
+        }
+        for (int i = 0; i < terrainObjects.size(); i++)
+        {
+            terrainObjects[i].render(view, projection);
         }
         //testObject.rotate(-rot, glm::normalize(glm::vec3(0, 1, 0)));
        // testObject.pos = glm::vec3(1, 0, 0);

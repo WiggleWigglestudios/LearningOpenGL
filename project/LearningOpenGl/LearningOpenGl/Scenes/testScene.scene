@@ -1,0 +1,10 @@
+Textures\\terrainTest1DepthMap.png
+Textures\\terrainTest1DepthMap.png
+1024,128,1024
+3
+1,2,3,0,0,1,0,1,0,0
+vox\\generic_sedan_red.vox
+-0.375,7.625,10.125,0,1,0,0,0,-1,0
+vox\\tree_birch.vox
+0,0,10,0,1,0,0,0,-1,1
+vox\\tree_birch.vox

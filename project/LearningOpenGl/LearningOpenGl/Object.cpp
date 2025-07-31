@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "ogt_vox.h";
+#include "stb_image.h"
 
 Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 	glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte)
@@ -18,6 +19,7 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 		voxelPalatte[i] = _voxelPalatte[i];
 	}
 	voxelSize = _voxelSize;
+
 }
 
 
@@ -89,7 +91,66 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	}
 }
 
+//loading terrain
+Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, unsigned char* imageData, int imageWidth, int imageHeight, int imageChannels, int targetChannel, int startingPosX, int startingPosY,float maxHeight)
+{
+	pos = spawnPos;
+	forwardDir = spawnForwardDir;
+	upDir = spawnUpDir;
+	voxelSize = glm::i8vec3(glm::min(64,imageWidth-startingPosX), 0, glm::min(64, imageHeight - startingPosY));
 
+	unsigned char maxY = 0;
+	unsigned char minY = 255;
+	for (int x = startingPosX; x < startingPosX + voxelSize.x; x++)
+	{
+		for (int z = startingPosY; z < startingPosY + voxelSize.z; z++)
+		{
+			float currentY = float(imageData[targetChannel + x * imageChannels + z * imageWidth * imageChannels]);
+			currentY /= 256.0f;
+			currentY *= maxHeight;
+			maxY = glm::max(maxY, unsigned char(currentY));
+			minY = glm::min(minY, unsigned char(currentY));
+				//glm::max(unsigned char(unsigned char(float(imageData[targetChannel+x* imageChannels+ z*imageWidth* imageChannels])/256.0)*maxHeight), maxY);
+		}
+	}
+	voxelSize.y = glm::max(int(maxY-minY),1);
+
+	voxelData.resize(voxelSize.x*voxelSize.y*voxelSize.z);
+	for (int x = 0; x < voxelSize.x; x++)
+	{
+		for (int z = 0; z <  voxelSize.z; z++)
+		{
+			for (int y = 0; y < voxelSize.y; y++)
+			{
+				float currentY = float(imageData[targetChannel + (x+startingPosX) * imageChannels + (z+startingPosY) * imageWidth * imageChannels]);
+				currentY /= 256.0f;
+				currentY *= maxHeight;
+				if (y+minY <= int(currentY))
+				{
+					voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] = unsigned char((std::rand() % 254) + 1);
+				}
+				else
+				{
+					voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] = 0;
+				}
+			}
+		}
+	}
+
+	voxelPalatte.resize(256*4);
+	for (int i = 0; i < voxelPalatte.size()/4; i++)
+	{
+		//sand 176, 117, 62
+		//grass 50, 168, 84
+		int offset = (std::rand() % 20 - 10);
+		voxelPalatte[i*4] =50+ offset;
+		voxelPalatte[i*4+1] = 168+ offset;
+		voxelPalatte[i*4+2] = 84+ offset;
+		voxelPalatte[i*4 + 3] = 255;
+	}
+	//voxelSize.y
+	pos.y += (voxelSize.y) / 8.0 / 2.0+ minY/8.0;
+}
 
 void Object::updateVolumeTexture()
 {

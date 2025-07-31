@@ -58,7 +58,10 @@ public:
 	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 		glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte);
 
-	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::string fileName,int modelNumber);
+	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::string fileName, int modelNumber);
+
+	//Samples 32x32 portion of height map image
+	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir,unsigned char* imageData,int imageWidth,int imageHeight,int imageChannels,int targetChannel,int startingPosX,int startingPosY,float maxHeight);
 
 	void updateShader(Shader inputShader);
 
