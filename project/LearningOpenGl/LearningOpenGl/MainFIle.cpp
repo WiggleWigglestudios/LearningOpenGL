@@ -352,22 +352,33 @@ int main()
 
     int terrainImageWidth, terrainImageHeight, terrainImageChannel;
     unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
-   // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
-   
+
+    int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
+    unsigned char* terrainImageDataColor = stbi_load("Textures\\tiedye.jpg", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
+    // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
+    if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
+    {
+        std::cout << "images not same size" << std::endl;
+    }
+
    
     std::vector<Object> terrainObjects;
     int voxelCount = 0;
+    //supposed ot be 16 by 16
     for (int x = 0; x < 16; x++)
     {
         for (int y = 0; y < 16; y++)
         {
-            Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), terrainImageData, terrainImageWidth, terrainImageHeight, terrainImageChannel, 0, x * 64, y * 64, 64.0);// 128.0);
+            Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), 
+                terrainImageData, terrainImageWidth, terrainImageHeight, terrainImageChannel,0,
+                terrainImageDataColor, terrainImageColorChannel, x * 64, y * 64, 64.0);
             terrainObject.updateShader(voxelShader);
             terrainObject.updateVolumeTexture();
             terrainObject.updatePaletteTexture();
             terrainObject.createVertexBufferObject();
             terrainObjects.push_back(terrainObject);
             voxelCount += terrainObject.voxelSize.x * terrainObject.voxelSize.y * terrainObject.voxelSize.z;
+            std::cout << (x*16 + y) << "/256 " << (float(x*16 + y) / 256)*100 << "%" << std::endl;
         }
     }
     std::cout << "terrain voxel count " << voxelCount << std::endl;

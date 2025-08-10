@@ -1,6 +1,7 @@
 #include "Object.h"
 #include "ogt_vox.h";
 #include "stb_image.h"
+#include "ColorList.h";
 
 Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 	glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte)
@@ -92,12 +93,16 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 }
 
 //loading terrain
-Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, unsigned char* imageData, int imageWidth, int imageHeight, int imageChannels, int targetChannel, int startingPosX, int startingPosY,float maxHeight)
+Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, 
+	unsigned char* imageData, int imageWidth, int imageHeight, int imageChannels, int targetChannel,
+	unsigned char* imageDataColor, int imageColorChannels, int startingPosX, int startingPosY,float maxHeight)
 {
 	pos = spawnPos;
 	forwardDir = spawnForwardDir;
 	upDir = spawnUpDir;
 	voxelSize = glm::i8vec3(glm::min(64,imageWidth-startingPosX), 0, glm::min(64, imageHeight - startingPosY));
+
+	ColorList colorList = ColorList();
 
 	unsigned char maxY = 0;
 	unsigned char minY = 255;
@@ -105,6 +110,12 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	{
 		for (int z = startingPosY; z < startingPosY + voxelSize.z; z++)
 		{
+			
+			colorList.colors.push_back(imageDataColor[ x * imageColorChannels + z * imageWidth * imageColorChannels]);
+			colorList.colors.push_back(imageDataColor[ x * imageColorChannels + z * imageWidth * imageColorChannels+1]);
+			colorList.colors.push_back(imageDataColor[ x * imageColorChannels + z * imageWidth * imageColorChannels+2]);
+			
+
 			float currentY = float(imageData[targetChannel + x * imageChannels + z * imageWidth * imageChannels]);
 			currentY /= 256.0f;
 			currentY *= maxHeight;
@@ -115,11 +126,38 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	}
 	voxelSize.y = glm::max(int(maxY-minY),1);
 
+
+	colorList.removeRepeatColors();
+	voxelPalatte = colorList.averageColorList(256);
+	
+
 	voxelData.resize(voxelSize.x*voxelSize.y*voxelSize.z);
+	
 	for (int x = 0; x < voxelSize.x; x++)
 	{
 		for (int z = 0; z <  voxelSize.z; z++)
 		{
+			float r = float(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels]);
+			float g = float(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels+1]);
+			float b = float(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels+2]);
+			
+			int closestIndex = 1;
+			float distance = 1000000;
+			for (int i = 1; i < 256; i++)
+			{
+				
+				float currentDist = sqrt((r - float(voxelPalatte[i * 4])) * (r - float(voxelPalatte[i * 4])) +
+					(g - float(voxelPalatte[i * 4+1])) * (g - float(voxelPalatte[i * 4+1])) +
+						(b - float(voxelPalatte[i * 4+2])) * (b - float(voxelPalatte[i * 4]+2)));
+				if (currentDist < distance)
+				{
+					distance = currentDist;
+					closestIndex = i;
+					//timesChanged++;
+				}
+			}
+
+
 			for (int y = 0; y < voxelSize.y; y++)
 			{
 				float currentY = float(imageData[targetChannel + (x+startingPosX) * imageChannels + (z+startingPosY) * imageWidth * imageChannels]);
@@ -127,7 +165,7 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 				currentY *= maxHeight;
 				if (y+minY <= int(currentY))
 				{
-					voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] = unsigned char((std::rand() % 254) + 1);
+					voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] = closestIndex;// unsigned char((std::rand() % 254) + 1);
 				}
 				else
 				{
@@ -136,19 +174,10 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 			}
 		}
 	}
+	
 
-	voxelPalatte.resize(256*4);
-	for (int i = 0; i < voxelPalatte.size()/4; i++)
-	{
-		//sand 176, 117, 62
-		//grass 50, 168, 84
-		int offset = (std::rand() % 20 - 10);
-		voxelPalatte[i*4] =50+ offset;
-		voxelPalatte[i*4+1] = 168+ offset;
-		voxelPalatte[i*4+2] = 84+ offset;
-		voxelPalatte[i*4 + 3] = 255;
-	}
-	//voxelSize.y
+
+
 	pos.y += (voxelSize.y) / 8.0 / 2.0+ minY/8.0;
 }
 

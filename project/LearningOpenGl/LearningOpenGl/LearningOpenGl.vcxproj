@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColorList.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="MainFIle.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -159,6 +160,7 @@
     <None Include="voxelVert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColorList.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\exponential.hpp" />
     <ClInclude Include="glm\ext.hpp" />

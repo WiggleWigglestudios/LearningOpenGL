@@ -17,5 +17,6 @@ class Scene
 public:
 	std::vector<Object> objects;
 	Scene(const std::string& sceneFilePath);
+	
 
 };

@@ -232,7 +232,7 @@ void main()
 
         //FragColor.y=texture(paletteTexture,vec2(testHit.hitValue,0.0)).y;
         FragColor=vec4(texture(paletteTexture,vec2(testHit.hitValue,0.0)).xyz,1.0);
-        FragColor=vec4(abs(testHit.hitNormal),1.0);
+       // FragColor=vec4(abs(testHit.hitNormal),1.0);
        // FragColor.x*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
        // FragColor.y*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
        // FragColor.z*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
