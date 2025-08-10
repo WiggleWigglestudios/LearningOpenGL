@@ -8,24 +8,28 @@ C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpen
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(394,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(400,46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(417,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(459,40): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(461,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(463,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(465,43): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(469,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(471,43): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(474,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(476,43): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(480,20): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(460,40): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(462,42): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(464,42): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(466,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(470,42): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(472,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(475,42): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(477,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(481,20): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   Object.cpp
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(37,66): warning C4267: 'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
 C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(38,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(181,36): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(181,36): warning C4244:         with
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(181,36): warning C4244:         [
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(181,36): warning C4244:             T=float
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(181,36): warning C4244:         ]
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(131,19): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'double', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(134,16): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'double', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(199,36): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(199,36): warning C4244:         with
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(199,36): warning C4244:         [
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(199,36): warning C4244:             T=float
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(199,36): warning C4244:         ]
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Object.cpp(343,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Shader.cpp
   Generating Code...
   LearningOpenGl.vcxproj -> C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\x64\Debug\LearningOpenGl.exe

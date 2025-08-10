@@ -354,7 +354,7 @@ int main()
     unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
 
     int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
-    unsigned char* terrainImageDataColor = stbi_load("Textures\\tiedye.jpg", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
+    unsigned char* terrainImageDataColor = stbi_load("Textures\\brickTexture.jpg", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
     // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
     if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
     {
@@ -431,7 +431,8 @@ int main()
         
         glfwGetWindowSize(window, &width, &height);
         float fov = glm::radians(60.0f);
-        glm::mat4 projection = glm::perspective(fov, (float)width / (float)height, 0.01f, 100.0f);
+        float far = 200.0;
+        glm::mat4 projection = glm::perspective(fov, (float)width / (float)height, 0.01f, far);
 
         basicShader.setMat4("model", model);
         basicShader.setMat4("view", view);
@@ -451,7 +452,7 @@ int main()
 
         glfwGetWindowSize(window, &width, &height);
         testObject.voxelShader.use();
-        testObject.voxelShader.setVec3("windowSize", float(width), float(height), fov);
+        testObject.voxelShader.setVec4("windowSize", float(width), float(height), fov, far);
         testObject.voxelShader.setVec3("cameraPos", player.pos.x, player.pos.y, player.pos.z);// cubePos.x, cubePos.y, cubePos.z);
         testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x, player.lookDir.y, player.lookDir.z);
         

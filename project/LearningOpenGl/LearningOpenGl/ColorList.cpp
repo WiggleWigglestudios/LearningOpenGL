@@ -10,7 +10,6 @@ ColorList::ColorList()
 
 void ColorList::removeRepeatColors()
 {
-	
 	for (int i = 0; i < ColorList::colors.size(); i+=3)
 	{
 		for (int c = i+3; c < ColorList::colors.size(); c+=3)
@@ -28,6 +27,29 @@ void ColorList::removeRepeatColors()
 	}
 
 }
+
+void ColorList::removeRepeatFast()
+{
+	static std::bitset<256 * 256 * 256> seen;
+	seen.reset();
+	int writes = 0;
+	for (int i = 0; i < colors.size(); i += 3)
+	{
+		unsigned int colorKey = (static_cast<unsigned int>(colors[i]) << 16) |
+			(static_cast<unsigned int>(colors[i + 1]) << 8) |
+			(static_cast<unsigned int>(colors[i + 2]));
+		if (!seen[colorKey])
+		{
+			seen[colorKey] = true;
+			colors[writes++] = colors[i];
+			colors[writes++] = colors[i+1];
+			colors[writes++] = colors[i+2];
+
+		}
+	}
+	colors.resize(writes);
+}
+
 void ColorList::cutList(int axis)
 {
 	

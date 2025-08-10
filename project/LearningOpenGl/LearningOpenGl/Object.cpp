@@ -103,7 +103,7 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	voxelSize = glm::i8vec3(glm::min(64,imageWidth-startingPosX), 0, glm::min(64, imageHeight - startingPosY));
 
 	ColorList colorList = ColorList();
-
+	double totalStartTime = glfwGetTime();
 	unsigned char maxY = 0;
 	unsigned char minY = 255;
 	for (int x = startingPosX; x < startingPosX + voxelSize.x; x++)
@@ -126,10 +126,23 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	}
 	voxelSize.y = glm::max(int(maxY-minY),1);
 
-
-	colorList.removeRepeatColors();
-	voxelPalatte = colorList.averageColorList(256);
+	double startTime=glfwGetTime();
+	//std::cout << "start size " << colorList.colors.size() << std::endl;
+	double startSize = colorList.colors.size();
+	colorList.removeRepeatFast();
+	double endTime = glfwGetTime();
+	double endSize= colorList.colors.size();
+	double percentReduction = (startSize - endSize) / startSize * 100;
+	//std::cout << "end size " << colorList.colors.size()<<"("<< percentReduction<<"%) "<< ((endTime - startTime) * 1000) << " millis" << std::endl;
 	
+
+	startTime = glfwGetTime();
+	voxelPalatte = colorList.averageColorList(256);
+	endTime = glfwGetTime();
+	//std::cout << ((endTime - startTime) * 1000) << " millis" << std::endl;
+
+
+	double findClosestTime = 0;
 
 	voxelData.resize(voxelSize.x*voxelSize.y*voxelSize.z);
 	
@@ -137,26 +150,30 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	{
 		for (int z = 0; z <  voxelSize.z; z++)
 		{
-			float r = float(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels]);
-			float g = float(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels+1]);
-			float b = float(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels+2]);
+
+			startTime = glfwGetTime();
+			int r = int(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels]);
+			int g = int(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels+1]);
+			int b = int(imageDataColor[(x + startingPosX) * imageColorChannels + (z + startingPosY) * imageWidth * imageColorChannels+2]);
 			
 			int closestIndex = 1;
-			float distance = 1000000;
+			int distance = 60000000;
 			for (int i = 1; i < 256; i++)
 			{
-				
-				float currentDist = sqrt((r - float(voxelPalatte[i * 4])) * (r - float(voxelPalatte[i * 4])) +
-					(g - float(voxelPalatte[i * 4+1])) * (g - float(voxelPalatte[i * 4+1])) +
-						(b - float(voxelPalatte[i * 4+2])) * (b - float(voxelPalatte[i * 4]+2)));
+				int deltaR = (r - int(voxelPalatte[i * 4]));
+				int deltaG = (g - int(voxelPalatte[i * 4 + 1]));
+				int deltaB = (b - int(voxelPalatte[i * 4 + 2]));
+				int currentDist = (deltaR * deltaR) +
+					(deltaG * deltaG) +
+					(deltaB * deltaB);
 				if (currentDist < distance)
 				{
 					distance = currentDist;
 					closestIndex = i;
-					//timesChanged++;
 				}
 			}
-
+			endTime = glfwGetTime();
+			findClosestTime += endTime - startTime;
 
 			for (int y = 0; y < voxelSize.y; y++)
 			{
@@ -174,8 +191,9 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 			}
 		}
 	}
-	
-
+	//std::cout << "finding closest time " << (findClosestTime*1000) << std::endl;
+	double totalEndTime = glfwGetTime();
+	std::cout << "total time" << (totalEndTime - totalStartTime) * 1000 << " millis" << std::endl;
 
 
 	pos.y += (voxelSize.y) / 8.0 / 2.0+ minY/8.0;
@@ -322,20 +340,18 @@ void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
     voxelShader.use();
 	voxelShader.setInt("volumeTexture", 0);
 	voxelShader.setInt("paletteTexture", 1);
+	voxelShader.setFloat("iTime", glfwGetTime());
 
 
 
 	glm::mat4 modelMat = generateTranslationMatrix() * generateRotationMatrix() * glm::scale(glm::mat4(1.0), glm::vec3(voxelSize)*glm::vec3(1.0/8.0,1.0/8.0,1.0/8.0));
 
 	glm::mat4 inverseMat = glm::inverse(generateTranslationMatrix() * generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
-	//inverseMat = glm::mat4(1.0);
-	glm::mat4 inverseRotMat = glm::inverse(generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
-
+	
     voxelShader.setMat4("model", modelMat);
     voxelShader.setMat4("view", viewMat);
 	voxelShader.setMat4("projection", projectionMat);
 	voxelShader.setMat4("inverseMat", inverseMat);
-	voxelShader.setMat4("inverseRotMat", inverseRotMat);
 	voxelShader.setVec3("voxelSize", float(voxelSize.x), float(voxelSize.y), float(voxelSize.z));
     
 

@@ -7,14 +7,15 @@ out vec4 FragColor;
 in vec3 TexCoord;
 in vec4 gl_FragCoord;
 
+
+uniform float iTime;
 uniform sampler3D volumeTexture;
 uniform sampler2D paletteTexture;
-uniform vec3 windowSize; //width, height, fov
+uniform vec4 windowSize; //width, height, fov, far
 uniform vec3 cameraPos;
 uniform vec3 cameraLookDir;
 uniform vec3 voxelSize;
 uniform mat4 inverseMat;
-uniform mat4 inverseRotMat;
 
 
 struct RayHit
@@ -35,7 +36,7 @@ bool voxelHit(vec3 checkPos)
 {
     int voxelValue=int(checkVoxel(checkPos)*255);
     int trans=(voxelValue&3)+2;
-    bool transparent=(((int(gl_FragCoord.x)+int(gl_FragCoord.y)%trans)%trans)==0);
+    bool transparent=true;//(((int(gl_FragCoord.x)+int(gl_FragCoord.y)%trans)%trans)==0);
     return (voxelValue>0&&!(voxelValue>=252 && !transparent));
 }
 
@@ -229,13 +230,27 @@ void main()
         FragColor.x/=depth;
         FragColor.y/=depth;
         FragColor.z/=depth;     
+        
 
+
+         
+
+        mat4 rotMat=inverseMat;
+        rotMat[0].w=0.0;
+        rotMat[1].w=0.0;
+        rotMat[2].w=0.0;
+        rotMat[3]=vec4(0.0,0.0,0.0,1.0);
+        rotMat=inverse(rotMat);
+        testHit.hitNormal=(rotMat*vec4(testHit.hitNormal,1.0)).xyz;
+        
         //FragColor.y=texture(paletteTexture,vec2(testHit.hitValue,0.0)).y;
         FragColor=vec4(texture(paletteTexture,vec2(testHit.hitValue,0.0)).xyz,1.0);
-       // FragColor=vec4(abs(testHit.hitNormal),1.0);
-       // FragColor.x*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
-       // FragColor.y*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
-       // FragColor.z*= dot(testHit.hitNormal,normalize(vec3(3.0,10.0,-1.0)));
+        //FragColor=vec4(abs(testHit.hitNormal),1.0);
+        vec3 lightDir=normalize(vec3(cos(iTime)*3.0,4.0,sin(iTime)*3.0));
+        float lightEffect=max(dot(testHit.hitNormal,lightDir),0.2);
+        FragColor.x*=lightEffect;
+        FragColor.y*=lightEffect;
+        FragColor.z*=lightEffect;
         
 
        //FragColor.x/=depth;//sqrt(depth);
@@ -244,7 +259,7 @@ void main()
 
         //FragColor=FragColor*(1-depth/100)+vec4(0.2f, 0.1f, 0.5f, 1.0f)*(depth/100);
 
-        float far =100.0;
+        float far =windowSize.w;
         float near=0.01;
         float outputDepth=((far + near) / (far - near)) + ((2 * far * near) / (far - near)) / -depth;
         gl_FragDepth=((far + near) / (far - near)) + ((2 * far * near) / (far - near)) / -depth;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-
+#include <bitset>
 
 class ColorList
 {
@@ -12,6 +12,7 @@ public:
 	ColorList();
 
 	void removeRepeatColors();
+	void removeRepeatFast();
 	void cutList(int axis);
 	std::vector<unsigned char> averageColorList(int numberOfColors);
 	std::vector<unsigned char> averageColorList256();
