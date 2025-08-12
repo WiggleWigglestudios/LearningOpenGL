@@ -354,7 +354,7 @@ int main()
     unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
 
     int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
-    unsigned char* terrainImageDataColor = stbi_load("Textures\\brickTexture.jpg", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
+    unsigned char* terrainImageDataColor = stbi_load("Textures\\randomForestO.png", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
     // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
     if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
     {
@@ -364,6 +364,7 @@ int main()
    
     std::vector<Object> terrainObjects;
     int voxelCount = 0;
+    double terrainStartTime = glfwGetTime();
     //supposed ot be 16 by 16
     for (int x = 0; x < 16; x++)
     {
@@ -381,7 +382,8 @@ int main()
             std::cout << (x*16 + y) << "/256 " << (float(x*16 + y) / 256)*100 << "%" << std::endl;
         }
     }
-    std::cout << "terrain voxel count " << voxelCount << std::endl;
+    double terrainTotalTime = (glfwGetTime() - terrainStartTime) * 1000.0;
+    std::cout << "terrain voxel count " << voxelCount <<" it took "<< terrainTotalTime<<" millis" << std::endl;
 
     lastFrame = glfwGetTime();
     float rot = 0.0;
