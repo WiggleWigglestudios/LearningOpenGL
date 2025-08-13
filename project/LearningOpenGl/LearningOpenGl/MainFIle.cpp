@@ -354,7 +354,7 @@ int main()
     unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
 
     int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
-    unsigned char* terrainImageDataColor = stbi_load("Textures\\randomForestO.png", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
+    unsigned char* terrainImageDataColor = stbi_load("Textures\\terrainTest2TextureO.png", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
     // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
     if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
     {

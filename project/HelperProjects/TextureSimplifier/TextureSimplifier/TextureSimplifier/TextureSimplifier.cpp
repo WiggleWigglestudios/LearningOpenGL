@@ -80,8 +80,8 @@ void updateChunk(int x,int y,unsigned char* imageData,int imageWidth,int imageHe
 
 int main()
 {
-    const char* inputFilePath = "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Textures\\tiedye.jpg";
-    const char* outputFilePath = "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Textures\\tiedyeO.png";
+    const char* inputFilePath = "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Textures\\terrainTest2Texture.png";
+    const char* outputFilePath = "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Textures\\terrainTest2TextureO.png";
 
     const char* outputDifferenceFilePath = "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Textures\\ODifference.png";
 
@@ -101,8 +101,8 @@ int main()
         }
     }
 
-    stbi_write_png(outputFilePath, imageColorWidth, imageColorHeight, 3, terrainImageDataColor, imageColorWidth * 3);
-    stbi_write_png(outputDifferenceFilePath, imageColorWidth, imageColorHeight, 3, terrainImageDifData, imageColorWidth * 3);
+    stbi_write_png(outputFilePath, imageColorWidth, imageColorHeight, imageColorChannel, terrainImageDataColor, imageColorWidth * imageColorChannel);
+    stbi_write_png(outputDifferenceFilePath, imageColorWidth, imageColorHeight, imageColorChannel, terrainImageDifData, imageColorWidth * imageColorChannel);
 
     std::cout << "Hello World!\n";
 }

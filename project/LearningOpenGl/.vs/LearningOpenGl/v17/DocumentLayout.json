@@ -7,9 +7,6 @@
       "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\MainFIle.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.39.33519\\INCLUDE\\XMEMORY||{3B902123-F8A7-4915-9F01-361F908088D0}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Object.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\Object.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -68,6 +65,9 @@
     {
       "AbsoluteMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Scene.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1D48EE18-CF30-4D35-8C47-22313DB68ABB}|LearningOpenGl\\LearningOpenGl.vcxproj|solutionrelative:LearningOpenGl\\Scene.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xmemory||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -81,7 +81,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "Shader.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\Shader.h",
@@ -89,25 +89,24 @@
               "RelativeToolTip": "LearningOpenGl\\Shader.h",
               "ViewState": "AQIAAAYAAAAAAAAAAAAswB0AAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-06-13T23:47:35.319Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T23:47:35.319Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Object.cpp",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Object.cpp",
               "RelativeDocumentMoniker": "LearningOpenGl\\Object.cpp",
               "ToolTip": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Object.cpp",
               "RelativeToolTip": "LearningOpenGl\\Object.cpp",
-              "ViewState": "AQIAAKAAAAAAAAAAAAAAAK4AAAAbAAAA",
+              "ViewState": "AQIAAJEAAAAAAAAAAAAIwK4AAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-16T01:04:03.646Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "vert.glsl",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\vert.glsl",
               "RelativeDocumentMoniker": "LearningOpenGl\\vert.glsl",
@@ -115,12 +114,11 @@
               "RelativeToolTip": "LearningOpenGl\\vert.glsl",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-06-13T10:34:15.793Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T10:34:15.793Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "ColorList.cpp",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\ColorList.cpp",
               "RelativeDocumentMoniker": "LearningOpenGl\\ColorList.cpp",
@@ -128,12 +126,11 @@
               "RelativeToolTip": "LearningOpenGl\\ColorList.cpp",
               "ViewState": "AQIAACcAAAAAAAAAAAAAAG8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-08-09T20:57:53.009Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-09T20:57:53.009Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "Shader.cpp",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Shader.cpp",
               "RelativeDocumentMoniker": "LearningOpenGl\\Shader.cpp",
@@ -145,7 +142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 15,
               "Title": "Scene.cpp",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Scene.cpp",
               "RelativeDocumentMoniker": "LearningOpenGl\\Scene.cpp",
@@ -157,7 +154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 14,
               "Title": "Player.cpp",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Player.cpp",
               "RelativeDocumentMoniker": "LearningOpenGl\\Player.cpp",
@@ -169,7 +166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "frag.glsl",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\frag.glsl",
               "RelativeDocumentMoniker": "LearningOpenGl\\frag.glsl",
@@ -187,7 +184,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 16,
               "Title": "xmemory",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xmemory",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xmemory",
@@ -195,8 +192,7 @@
               "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xmemory",
               "ViewState": "AQIAAMcCAAAAAAAAAAAkwNkCAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-08-12T20:35:11.739Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-12T20:35:11.739Z"
             },
             {
               "$type": "Document",
@@ -206,14 +202,14 @@
               "RelativeDocumentMoniker": "LearningOpenGl\\MainFIle.cpp",
               "ToolTip": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\MainFIle.cpp",
               "RelativeToolTip": "LearningOpenGl\\MainFIle.cpp",
-              "ViewState": "AQIAAEoBAAAAAAAAAAAAAF0BAAAWAAAA",
+              "ViewState": "AQIAAEoBAAAAAAAAAAAAAGABAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-06-07T01:52:36.046Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "stb_image.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\stb_image.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\stb_image.h",
@@ -221,12 +217,11 @@
               "RelativeToolTip": "LearningOpenGl\\stb_image.h",
               "ViewState": "AQIAABEfAAAAAAAAAAAuwDQfAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-08-12T19:37:46.396Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-12T19:37:46.396Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "voxelFrag.glsl",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\voxelFrag.glsl",
               "RelativeDocumentMoniker": "LearningOpenGl\\voxelFrag.glsl",
@@ -234,12 +229,11 @@
               "RelativeToolTip": "LearningOpenGl\\voxelFrag.glsl",
               "ViewState": "AQIAAOsAAAAAAAAAAAAAAAEBAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-06-16T15:28:16.627Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-16T15:28:16.627Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "Player.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Player.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\Player.h",
@@ -251,7 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "ColorList.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\ColorList.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\ColorList.h",
@@ -259,12 +253,11 @@
               "RelativeToolTip": "LearningOpenGl\\ColorList.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-08-09T20:57:23.713Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-09T20:57:23.713Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "Scene.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Scene.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\Scene.h",
@@ -276,7 +269,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "voxelVert.glsl",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\voxelVert.glsl",
               "RelativeDocumentMoniker": "LearningOpenGl\\voxelVert.glsl",
@@ -288,7 +281,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "Object.h",
               "DocumentMoniker": "C:\\Users\\breck\\Documents\\LearnOpenGL2\\github\\LearningOpenGL\\project\\LearningOpenGl\\LearningOpenGl\\Object.h",
               "RelativeDocumentMoniker": "LearningOpenGl\\Object.h",
