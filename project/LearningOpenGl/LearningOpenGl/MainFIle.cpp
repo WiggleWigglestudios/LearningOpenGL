@@ -354,7 +354,7 @@ int main()
     unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
 
     int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
-    unsigned char* terrainImageDataColor = stbi_load("Textures\\terrainTest2TextureO.png", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
+    unsigned char* terrainImageDataColor = stbi_load("Textures\\brickTextureO.jpg", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
     // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
     if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
     {
@@ -372,7 +372,7 @@ int main()
         {
             Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), 
                 terrainImageData, terrainImageWidth, terrainImageHeight, terrainImageChannel,0,
-                terrainImageDataColor, terrainImageColorChannel, x * 64, y * 64, 64.0);
+                terrainImageDataColor, terrainImageColorChannel, x * 64, y * 64, 100.0);//64
             terrainObject.updateShader(voxelShader);
             terrainObject.updateVolumeTexture();
             terrainObject.updatePaletteTexture();
@@ -411,7 +411,7 @@ int main()
 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
-        glClearColor(0.2f, 0.1f, 0.5f, 1.0f);
+        glClearColor(0.53f,0.81f,0.92f, 1.0f);//nice purple 0.2f, 0.1f, 0.5f, 1.0f
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
        // glEnable(GL_CULL_FACE);
         //glCullFace(GL_BACK);

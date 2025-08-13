@@ -170,6 +170,34 @@ void main()
 	vec3 safeCoord = clamp(TexCoord, 0.0, 1.0 - 1e-8);
 	vec3 startingPos=safeCoord*voxelSize;//floor(safeCoord*voxelSize)/voxelSize;
 
+    //fix normals on edge of models
+    vec3 startingNormal=vec3(0.0,0.0,0.0);
+    if(safeCoord.x==0)
+    {
+        startingNormal=vec3(-1.0,0.0,0.0);
+    }
+    else if(safeCoord.y==0)
+    {
+        startingNormal=vec3(0.0,-1.0,0.0);
+    }
+    else if(safeCoord.z==0)
+    {
+        startingNormal=vec3(0.0,0.0,-1.0);
+    }
+    else if(safeCoord.x>=0.999)
+    {
+        startingNormal=vec3(1.0,0.0,0.0);
+    }
+    else if(safeCoord.y>=0.999)
+    {
+        startingNormal=vec3(0.0,1.0,0.0);
+    }
+    else if(safeCoord.z>=0.999)
+    {
+        startingNormal=vec3(0.0,0.0,1.0);
+    }
+
+
 	if(newCameraPos.x>=0&&newCameraPos.x<voxelSize.x/8.0&&
 	newCameraPos.y>=0&&newCameraPos.y<voxelSize.y/8.0&&
 	newCameraPos.z>=0&&newCameraPos.z<voxelSize.z/8.0)
@@ -232,26 +260,38 @@ void main()
         FragColor.z/=depth;     
         
 
-
          
 
+        //rotate normals based on objects rotation
         mat4 rotMat=inverseMat;
         rotMat[0].w=0.0;
         rotMat[1].w=0.0;
         rotMat[2].w=0.0;
         rotMat[3]=vec4(0.0,0.0,0.0,1.0);
         rotMat=inverse(rotMat);
+         
+        if(testHit.travelDist<0.1)
+        {
+            testHit.hitNormal=startingNormal;
+            FragColor=vec4(1.0,1.0,1.0,1.0);
+        }
+
+
         testHit.hitNormal=(rotMat*vec4(testHit.hitNormal,1.0)).xyz;
         
         //FragColor.y=texture(paletteTexture,vec2(testHit.hitValue,0.0)).y;
         FragColor=vec4(texture(paletteTexture,vec2(testHit.hitValue,0.0)).xyz,1.0);
         //FragColor=vec4(abs(testHit.hitNormal),1.0);
+       
+       //simple lighting
         vec3 lightDir=normalize(vec3(cos(iTime)*3.0,4.0,sin(iTime)*3.0));
         float lightEffect=max(dot(testHit.hitNormal,lightDir),0.2);
-        FragColor.x*=lightEffect;
-        FragColor.y*=lightEffect;
-        FragColor.z*=lightEffect;
+       // FragColor.x*=lightEffect;
+       // FragColor.y*=lightEffect;
+        //FragColor.z*=lightEffect;
         
+       
+
 
        //FragColor.x/=depth;//sqrt(depth);
        //FragColor.y/=depth;//sqrt(depth);
