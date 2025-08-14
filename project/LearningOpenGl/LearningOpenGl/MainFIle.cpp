@@ -362,12 +362,13 @@ int main()
         std::cout << "images not same size" << std::endl;
     }
 
-    Scene testScene = Scene("Scenes\\testScene.scene");
-    testScene.Load();
+   
    
     std::vector<Object> terrainObjects;
     int voxelCount = 0;
     double terrainStartTime = glfwGetTime();
+    Scene testScene = Scene("Scenes\\testScene.scene");
+    testScene.Load();
     //supposed ot be 16 by 16
     for (int x = 0; x < 16; x++)
     {
@@ -464,22 +465,22 @@ int main()
         
         testObject.pos = glm::vec3(0, 0, 0);
         testObject.rotate(3.14159265359/2, glm::normalize(glm::vec3(1, 0, 0)));
-        testObject.render(view, projection);
+       // testObject.render(view, projection);
         testObject.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
         testObject2.pos = glm::vec3(-1.0, -0.6, 1.6);
         testObject2.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
-        testObject2.render(view, projection);
+       // testObject2.render(view, projection);
         testObject2.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
         
 
         testObject3.pos = glm::vec3(-3.0/8.0, 7.5+1.0/8.0, 10.0+1.0/8.0);
         testObject3.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-        testObject3.render(view, projection);
+       // testObject3.render(view, projection);
         testObject3.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
 
         testObject4.pos = glm::vec3(0.0, 0.0, 10.0);
         testObject4.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-        testObject4.render(view, projection);
+      //  testObject4.render(view, projection);
         testObject4.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
 
 

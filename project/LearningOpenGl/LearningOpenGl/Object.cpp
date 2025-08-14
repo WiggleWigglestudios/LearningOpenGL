@@ -203,7 +203,7 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 	}
 	//std::cout << "finding closest time " << (findClosestTime*1000) << std::endl;
 	double totalEndTime = glfwGetTime();
-	std::cout << "total time" << (totalEndTime - totalStartTime) * 1000 << " millis" << std::endl;
+	//std::cout << "total time" << (totalEndTime - totalStartTime) * 1000 << " millis" << std::endl;
 
 
 	pos.y += (voxelSize.y) / 8.0 / 2.0+ minY/8.0;
@@ -250,7 +250,7 @@ void Object::updatePaletteTexture()
 	}
 	else
 	{
-		std::cout << "incorrect palette data size. can't update palette texture" << std::endl;
+		std::cout << "incorrect palette data size. can't update palette texture (" << int(pos.x / 8) <<"," << int(pos.y / 8) << "," << int(pos.z / 8) <<")" << std::endl;
 		std::cout << voxelPalatte.size() << " vs the expected " << (256*4) << std::endl;
 	}
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 4);

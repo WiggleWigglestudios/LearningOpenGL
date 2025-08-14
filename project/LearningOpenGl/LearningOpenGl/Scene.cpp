@@ -2,7 +2,6 @@
 
 #include "Scene.h"
 
-
 Scene::Scene(const std::string& _sceneFilePath)
 {
 	sceneFilePath = _sceneFilePath;
@@ -15,22 +14,18 @@ int min(int a, int b)
 
 
 void CreateChunkInIndexRange(std::vector<Object>& objects, int startIndex, int endIndex,unsigned char* terrainImageData,int heightMapImageWidth,int heightMapImageHeight,int heightMapImageChannel,
-    unsigned char* terrainImageDataColor,int terrainImageColorChannel, int ChunkXSize, float ChunkYSize,int ChunkZSize,Shader& voxelShader,int MapYSize)
+    unsigned char* terrainImageDataColor,int terrainImageColorChannel, int ChunkXSize, float ChunkYSize,int ChunkZSize,int MapYSize)
 {
     for (int i = startIndex; i < endIndex; i++)
     {
         int x = i/(MapYSize / ChunkZSize);
         int y = i%(MapYSize / ChunkZSize);
-        std::cout << "Loading chunk:" << x << "," << y << std::endl;
-        Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0),
+       // std::cout << "Loading chunk:" << x << "," << y << std::endl;
+        //Object terrainObject 
+        objects[i] = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0),
             terrainImageData, heightMapImageWidth, heightMapImageHeight, heightMapImageChannel, 0,
             terrainImageDataColor, terrainImageColorChannel, x * ChunkXSize, y * ChunkZSize, ChunkYSize);//64
 
-        terrainObject.updateShader(voxelShader);
-        terrainObject.updateVolumeTexture();
-        terrainObject.updatePaletteTexture();
-        terrainObject.createVertexBufferObject();
-        objects[i] = (terrainObject);
     }
 }
 
@@ -45,6 +40,20 @@ vox\\generic_sedan_red.vox
 -0.375,7.625,10.125,0,1,0,0,0,-1,0 object pos x,y,z forward dir x,y,z up dir x,y,z, model number n
 vox\\tree_birch.vox
 0,0,10,0,1,0,0,0,-1,1 object pos x,y,z forward dir x,y,z up dir x,y,z, model number n
+vox\\tree_birch.vox
+
+Textures\\terrainTest2DepthMap.png
+Textures\\terrainTest2TextureO.png
+1024,1024
+64,128.0,64
+4
+0,0,0,0,1,0,0,0,-1,1
+vox\\generic_sedan_red.vox
+-1.0,-0.6,1.6,0,0,1,-1,0,0,0
+vox\\generic_sedan_red.vox
+-0.375,7.625,10.125,0,1,0,0,0,-1,0
+vox\\tree_birch.vox
+0,0,10,0,1,0,0,0,-1,1
 vox\\tree_birch.vox
 */
 void Scene::Load()
@@ -64,6 +73,7 @@ void Scene::Load()
         SceneFile.close();
         // convert stream into string
         sceneText = sceneStream.str();
+        sceneText += '\n';
     }
     catch (std::ifstream::failure e)
     {
@@ -147,20 +157,45 @@ void Scene::Load()
     objects.resize((MapXSize / ChunkXSize) * (MapYSize / ChunkZSize) + ModelCount);
 
 
+    //loading terrain 
     unsigned int n = std::thread::hardware_concurrency();
     std::cout << "Hardware concurrency: " << n << " threads\n";
     n--;
     if (n > 1)
     { 
         int totalChunks = MapXSize / ChunkXSize * MapYSize / ChunkZSize;
-        CreateChunkInIndexRange(objects, 0, totalChunks, terrainImageData, heightMapImageWidth, heightMapImageHeight, heightMapImageChannel, terrainImageDataColor,
-            terrainImageColorChannel, ChunkXSize, ChunkYSize, ChunkZSize, voxelShader, MapYSize);
-       // std::thread t1(CreateChunkInIndexRange, objects, 0, totalChunks/2, terrainImageData, heightMapImageWidth, heightMapImageHeight, heightMapImageChannel, terrainImageDataColor,
-        //        terrainImageColorChannel, ChunkXSize, ChunkYSize, ChunkZSize, voxelShader, MapYSize);
-       // std::thread t2(CreateChunkInIndexRange, objects, totalChunks / 2, totalChunks, terrainImageData, heightMapImageWidth, heightMapImageHeight, heightMapImageChannel, terrainImageDataColor,
-        //    terrainImageColorChannel, ChunkXSize, ChunkYSize, ChunkZSize, voxelShader, MapYSize);
-        //t1.join();
-        //t2.join();
+          
+        std::vector<std::thread> threads;
+        threads.reserve(n);
+
+        for (int i = 0; i < n; i++)
+        {
+            if (i < n - 1)
+            {
+                threads.emplace_back(CreateChunkInIndexRange, std::ref(objects), totalChunks / n * i, totalChunks / n * i + totalChunks / n, terrainImageData, heightMapImageWidth, heightMapImageHeight, heightMapImageChannel, terrainImageDataColor,
+                    terrainImageColorChannel, ChunkXSize, ChunkYSize, ChunkZSize, MapYSize);
+            }
+            else
+            {
+                threads.emplace_back(CreateChunkInIndexRange, std::ref(objects), totalChunks / n * i,totalChunks, terrainImageData, heightMapImageWidth, heightMapImageHeight, heightMapImageChannel, terrainImageDataColor,
+                    terrainImageColorChannel, ChunkXSize, ChunkYSize, ChunkZSize, MapYSize);
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            threads[i].join();
+        }
+
+        int voxelCount = 0;
+        for (int i = 0; i < objects.size()-ModelCount; i++)
+        {
+            objects[i].updateShader(voxelShader);
+            objects[i].updateVolumeTexture();
+            objects[i].updatePaletteTexture();
+            objects[i].createVertexBufferObject();
+            voxelCount += objects[i].voxelSize.x * objects[i].voxelSize.y * objects[i].voxelSize.z;
+        }
+        std::cout << "total voxels in terrain: " << voxelCount << std::endl;
     }
     else
     {
@@ -186,6 +221,64 @@ void Scene::Load()
         }
         std::cout << "total voxels in terrain: " << voxelCount << std::endl;
     }
+
+
+    //loading other models
+    for (int i = 0; i < ModelCount; i++)
+    {
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float posX = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float posY = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float posZ = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float forwardX = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float forwardY = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float forwardZ = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float upX = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float upY = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find(',', startIndex);
+        float upZ = std::stof(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find('\n', startIndex);
+        int modelNumber = std::stoi(sceneText.substr(startIndex, endIndex - startIndex));
+
+        startIndex = endIndex + 1;
+        endIndex = sceneText.find('\n', startIndex);
+        std::string modelPath = sceneText.substr(startIndex, endIndex - startIndex);
+
+        objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)] = 
+            Object(glm::vec3(posX, posY, posZ), glm::vec3(forwardX, forwardY, forwardZ), glm::vec3(upX,upY,upZ), modelPath, modelNumber);
+
+        objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].updateShader(voxelShader);
+        objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].updateVolumeTexture();
+        objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].updatePaletteTexture();
+        objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].createVertexBufferObject();
+    }
+
 }
 
 
