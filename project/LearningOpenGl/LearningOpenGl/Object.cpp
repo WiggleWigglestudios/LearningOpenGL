@@ -52,7 +52,7 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 			int ySize = model->size_y;
 			int zSize = model->size_z;
 			voxelData.resize(xSize * ySize * zSize);
-			std::cout << xSize <<" " << ySize<<" " << zSize <<" " <<voxelData.size()<< std::endl;
+			//std::cout << xSize <<" " << ySize<<" " << zSize <<" " <<voxelData.size()<< std::endl;
 			//std::vector<unsigned char> voxelData(xSize * ySize * zSize, 0);
 			int voxelIndex = 0;
 			for (int z = 0; z < zSize; z++)
@@ -192,7 +192,14 @@ Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpD
 				currentY *= maxHeight;
 				if (y+minY <= int(currentY))
 				{
-					voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] = closestIndex;// unsigned char((std::rand() % 254) + 1);
+					if (y + minY + 3 <= int(currentY))
+					{
+						voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] =  unsigned char((std::rand() % 254) + 1);
+					}
+					else
+					{
+						voxelData[x + (y * voxelSize.x) + (z * voxelSize.x * voxelSize.y)] = closestIndex;// unsigned char((std::rand() % 254) + 1);
+					}
 				}
 				else
 				{

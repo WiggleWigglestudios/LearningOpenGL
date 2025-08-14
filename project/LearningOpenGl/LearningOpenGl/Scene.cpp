@@ -161,6 +161,8 @@ void Scene::Load()
     unsigned int n = std::thread::hardware_concurrency();
     std::cout << "Hardware concurrency: " << n << " threads\n";
     n--;
+
+    int voxelCount = 0;
     if (n > 1)
     { 
         int totalChunks = MapXSize / ChunkXSize * MapYSize / ChunkZSize;
@@ -186,7 +188,6 @@ void Scene::Load()
             threads[i].join();
         }
 
-        int voxelCount = 0;
         for (int i = 0; i < objects.size()-ModelCount; i++)
         {
             objects[i].updateShader(voxelShader);
@@ -277,8 +278,10 @@ void Scene::Load()
         objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].updateVolumeTexture();
         objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].updatePaletteTexture();
         objects[i + (MapXSize / ChunkXSize) * (MapYSize / ChunkZSize)].createVertexBufferObject();
-    }
 
+        voxelCount += objects[i].voxelSize.x * objects[i].voxelSize.y * objects[i].voxelSize.z;
+    }
+    std::cout << "total voxels in scene: " << voxelCount << std::endl;
 }
 
 

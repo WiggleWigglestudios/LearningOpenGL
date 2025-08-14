@@ -46,10 +46,23 @@ void Player::updateMovement(GLFWwindow* window,float deltaTime)
     }
 
 }
+
+float max(float a, float b)
+{
+   return a > b ? a : b;
+}
+float min(float a, float b)
+{
+    return a<b ? a : b;
+}
+
 void Player::updateLook(float deltaTime, glm::vec2 deltaMouse)
 {
+    float pitch =asin(lookDir.y);
+    float yChange = -deltaMouse.y * deltaTime * mouseSensitivity;
+    yChange = -pitch + max(min(pitch + yChange, 1.55334303427), -1.55334303427);
     lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0),deltaMouse.x * deltaTime * mouseSensitivity, glm::vec3(0, 1, 0)));
-    lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0), deltaMouse.y * deltaTime * mouseSensitivity, glm::normalize(glm::cross(lookDir, glm::vec3(0, 1, 0)))));
+    lookDir = glm::vec3(glm::vec4(lookDir, 1.0) * glm::rotate(glm::mat4(1.0), -yChange, glm::normalize(glm::cross(lookDir, glm::vec3(0, 1, 0)))));
     
 }
 

@@ -64,7 +64,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
     if (locked)
     {
-        player.updateLook(deltaTime,glm::vec2(xpos- lastXPosMouse,ypos-lastYPosMouse));
+        player.updateLook(0.007 /*deltaTime*/, glm::vec2(xpos - lastXPosMouse, ypos - lastYPosMouse));
     }
     
     lastXPosMouse = xpos;
@@ -323,72 +323,16 @@ int main()
 
 
 
-    Shader voxelShader = Shader("voxelVert.glsl", "voxelFrag.glsl");
-
-
-    Object testObject = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\generic_sedan_red.vox", 1);
-    testObject.updateShader(voxelShader);
-    testObject.updateVolumeTexture();
-    testObject.updatePaletteTexture();
-    testObject.createVertexBufferObject();
-
-
-    Object testObject2 = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\generic_sedan_red.vox", 0);
-    testObject2.updateShader(voxelShader);
-    testObject2.updateVolumeTexture();
-    testObject2.updatePaletteTexture();
-    testObject2.createVertexBufferObject();
-
-    Object testObject3 = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\tree_birch.vox", 0);
-    testObject3.updateShader(voxelShader);
-    testObject3.updateVolumeTexture();
-    testObject3.updatePaletteTexture();
-    testObject3.createVertexBufferObject();
-
-    Object testObject4 = Object(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), "vox\\tree_birch.vox", 1);
-    testObject4.updateShader(voxelShader);
-    testObject4.updateVolumeTexture();
-    testObject4.updatePaletteTexture();
-    testObject4.createVertexBufferObject();
-
-    int terrainImageWidth, terrainImageHeight, terrainImageChannel;
-    unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
-
-    int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
-    unsigned char* terrainImageDataColor = stbi_load("Textures\\terrainTest2TextureO.png", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
-    // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
-    if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
-    {
-        std::cout << "images not same size" << std::endl;
-    }
-
-   
    
     std::vector<Object> terrainObjects;
     int voxelCount = 0;
     double terrainStartTime = glfwGetTime();
+
     Scene testScene = Scene("Scenes\\testScene.scene");
     testScene.Load();
-    //supposed ot be 16 by 16
-    for (int x = 0; x < 16; x++)
-    {
-        for (int y = 0; y < 16; y++)
-        {
-            /*Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0),
-                terrainImageData, terrainImageWidth, terrainImageHeight, terrainImageChannel,0,
-                terrainImageDataColor, terrainImageColorChannel, x * 64, y * 64, 100.0);//64
-            terrainObject.updateShader(voxelShader);
-            terrainObject.updateVolumeTexture();
-            terrainObject.updatePaletteTexture();
-            terrainObject.createVertexBufferObject();
-            terrainObjects.push_back(terrainObject);
-            voxelCount += terrainObject.voxelSize.x * terrainObject.voxelSize.y * terrainObject.voxelSize.z;
-            std::cout << (x*16 + y) << "/256 " << (float(x*16 + y) / 256)*100 << "%" << std::endl;
-            */
-        }
-    }
+ 
     double terrainTotalTime = (glfwGetTime() - terrainStartTime) * 1000.0;
-    std::cout << "terrain voxel count " << voxelCount <<" it took "<< terrainTotalTime<<" millis" << std::endl;
+    std::cout << "it took "<< terrainTotalTime<<" millis to load the scene" << std::endl;
 
     lastFrame = glfwGetTime();
     float rot = 0.0;
@@ -446,7 +390,7 @@ int main()
         basicShader.setMat4("projection", projection);
 
 
-
+        
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glActiveTexture(GL_TEXTURE1);
@@ -454,81 +398,14 @@ int main()
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 3 * 2 * 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-
-
+        
 
         glfwGetWindowSize(window, &width, &height);
-        testObject.voxelShader.use();
-        testObject.voxelShader.setVec4("windowSize", float(width), float(height), fov, far);
-        testObject.voxelShader.setVec3("cameraPos", player.pos.x, player.pos.y, player.pos.z);// cubePos.x, cubePos.y, cubePos.z);
-        testObject.voxelShader.setVec3("cameraLookDir", player.lookDir.x, player.lookDir.y, player.lookDir.z);
-        
-        testObject.pos = glm::vec3(0, 0, 0);
-        testObject.rotate(3.14159265359/2, glm::normalize(glm::vec3(1, 0, 0)));
-       // testObject.render(view, projection);
-        testObject.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-        testObject2.pos = glm::vec3(-1.0, -0.6, 1.6);
-        testObject2.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
-       // testObject2.render(view, projection);
-        testObject2.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(0, 0, 1)));
-        
+       
 
-        testObject3.pos = glm::vec3(-3.0/8.0, 7.5+1.0/8.0, 10.0+1.0/8.0);
-        testObject3.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-       // testObject3.render(view, projection);
-        testObject3.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-
-        testObject4.pos = glm::vec3(0.0, 0.0, 10.0);
-        testObject4.rotate(3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-      //  testObject4.render(view, projection);
-        testObject4.rotate(-3.14159265359 / 2, glm::normalize(glm::vec3(1, 0, 0)));
-
-
-       // testObject.rotate(0.5*deltaTime, glm::normalize(glm::vec3(0, 1, 0)));
-        rot += 1.0 * deltaTime;
-       // testObject.rotate(rot, glm::normalize(glm::vec3(0, 1, 0)));
-        glm::vec3 spacing = testObject.voxelSize;
-        
-        spacing.x += 1.0;
-        spacing.y += 1.0;
-        spacing.z += 1.0;
-
-        spacing.x /= 8.0;
-        spacing.y /= 8.0;
-        spacing.z /= 8.0;
-        for (int xPos = 0; xPos < 11; xPos++)
-        {
-            for (int yPos = 0; yPos < 1; yPos++)
-            {
-                for (int zPos = 0; zPos < 11; zPos++)
-                {
-                   // testObject.pos = glm::vec3(xPos * 4.0, yPos * 4.0 + floor((std::sin(float(xPos) / 3.0) + std::sin(float(zPos) / 3.0)) / 2.0 * 8.0) / 8.0, zPos * 4.0);
-                    
-                    //testObject.rotate(rot, glm::normalize(glm::vec3(sin(xPos), 1+cos(yPos), sin(zPos * 4))));
-                    //testObject.pos = glm::vec3(xPos * glm::max(spacing.x, glm::max(spacing.z, spacing.y)), yPos * glm::max(spacing.x, glm::max(spacing.z, spacing.y)), zPos * glm::max(spacing.x, glm::max(spacing.z, spacing.y)));
-                   // testObject.render(view, projection);
-                   // testObject.rotate(-rot, glm::normalize(glm::vec3(sin(xPos), 1 + cos(yPos), sin(zPos * 4))));
-                }
-            }
-        }
         testScene.Render(view, projection,player.pos,
             player.lookDir,glm::vec4(float(width), float(height), fov, far));
-        /*
-        for (int i = 0; i < terrainObjects.size(); i++)
-        {
-            terrainObjects[i].render(view, projection);
-        }
-        */
-        //testObject.rotate(-rot, glm::normalize(glm::vec3(0, 1, 0)));
-       // testObject.pos = glm::vec3(1, 0, 0);
-       // testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
-       // testObject.render(view, projection);
-       // testObject.rotate(-5, glm::normalize(glm::vec3(1, 1, 0)));
-       // testObject.pos = glm::vec3(-0.5, 0.5, 0);
-      //  testObject.rotate(rot/5.0, glm::normalize(glm::vec3(1, 1, 0)));
-      //  testObject.render(view, projection);
-       // testObject.rotate(-rot/5.0, glm::normalize(glm::vec3(1, 1, 0)));
-
+      
 
         glfwSwapBuffers(window);
         glfwPollEvents();
