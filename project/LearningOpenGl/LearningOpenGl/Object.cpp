@@ -3,6 +3,16 @@
 #include "stb_image.h"
 #include "ColorList.h";
 
+
+Object::Object()
+{
+	pos = glm::vec3(0, 0, 0);
+	forwardDir = glm::vec3(0, 0, 1.0);
+	upDir = glm::vec3(0, 1.0, 0.0);
+	voxelSize = glm::i8vec3(0, 0, 0);
+
+}
+
 Object::Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 	glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte)
 {
@@ -337,32 +347,35 @@ glm::mat4 Object::generateTranslationMatrix()
 void Object::render(glm::mat4 viewMat,glm::mat4 projectionMat)
 {
 
-    voxelShader.use();
-	voxelShader.setInt("volumeTexture", 0);
-	voxelShader.setInt("paletteTexture", 1);
-	voxelShader.setFloat("iTime", glfwGetTime());
+	if (voxelSize.x > 0 && voxelSize.y > 0 && voxelSize.z > 0)
+	{
+		voxelShader.use();
+		voxelShader.setInt("volumeTexture", 0);
+		voxelShader.setInt("paletteTexture", 1);
+		voxelShader.setFloat("iTime", glfwGetTime());
 
 
 
-	glm::mat4 modelMat = generateTranslationMatrix() * generateRotationMatrix() * glm::scale(glm::mat4(1.0), glm::vec3(voxelSize)*glm::vec3(1.0/8.0,1.0/8.0,1.0/8.0));
+		glm::mat4 modelMat = generateTranslationMatrix() * generateRotationMatrix() * glm::scale(glm::mat4(1.0), glm::vec3(voxelSize) * glm::vec3(1.0 / 8.0, 1.0 / 8.0, 1.0 / 8.0));
 
-	glm::mat4 inverseMat = glm::inverse(generateTranslationMatrix() * generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
-	
-    voxelShader.setMat4("model", modelMat);
-    voxelShader.setMat4("view", viewMat);
-	voxelShader.setMat4("projection", projectionMat);
-	voxelShader.setMat4("inverseMat", inverseMat);
-	voxelShader.setVec3("voxelSize", float(voxelSize.x), float(voxelSize.y), float(voxelSize.z));
-    
+		glm::mat4 inverseMat = glm::inverse(generateTranslationMatrix() * generateRotationMatrix());// glm::translate(glm::mat4(1.0), pos)* glm::lookAt(glm::vec3(0, 0, 0), forwardDir, upDir));
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_3D, volumeTexture);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, paletteTexture);
+		voxelShader.setMat4("model", modelMat);
+		voxelShader.setMat4("view", viewMat);
+		voxelShader.setMat4("projection", projectionMat);
+		voxelShader.setMat4("inverseMat", inverseMat);
+		voxelShader.setVec3("voxelSize", float(voxelSize.x), float(voxelSize.y), float(voxelSize.z));
 
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 3 * 2 * 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_3D, volumeTexture);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, paletteTexture);
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 3 * 2 * 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	}	
 }
 
 

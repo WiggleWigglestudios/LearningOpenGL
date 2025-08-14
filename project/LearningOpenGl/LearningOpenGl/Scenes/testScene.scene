@@ -1,6 +1,7 @@
-Textures\\terrainTest1DepthMap.png
-Textures\\terrainTest1DepthMap.png
-1024,128,1024
+Textures\\terrainTest2DepthMap.png
+Textures\\terrainTest2TextureO.png
+1024,1024
+64,100.0,64
 3
 1,2,3,0,0,1,0,1,0,0
 vox\\generic_sedan_red.vox

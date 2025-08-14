@@ -55,6 +55,8 @@ public:
 		return buffer;
 	}
 
+	Object();
+
 	Object(glm::vec3 spawnPos, glm::vec3 spawnForwardDir, glm::vec3 spawnUpDir, std::vector<unsigned char> _voxelData,
 		glm::i8vec3 _voxelSize, std::vector<unsigned char> _voxelPalatte);
 

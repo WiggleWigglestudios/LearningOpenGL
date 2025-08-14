@@ -1,20 +1,10 @@
-﻿  MainFIle.cpp
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(15,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(16,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(388,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(391,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(395,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(396,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(402,46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(419,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(462,40): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(464,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(466,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(468,43): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(472,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(474,43): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(477,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(479,43): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\MainFIle.cpp(483,20): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+﻿  Scene.cpp
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(76,28): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(81,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(87,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(92,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(98,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(103,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(108,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\LearningOpenGl\Scene.cpp(113,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   LearningOpenGl.vcxproj -> C:\Users\breck\Documents\LearnOpenGL2\github\LearningOpenGL\project\LearningOpenGl\x64\Debug\LearningOpenGl.exe

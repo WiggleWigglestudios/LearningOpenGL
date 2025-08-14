@@ -14,6 +14,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Player.h";
 #include "Object.h";
+#include "Scene.h";
 #include <vector>
 
 float deltaTime = 0.0f;	
@@ -354,13 +355,15 @@ int main()
     unsigned char* terrainImageData = stbi_load("Textures\\terrainTest2DepthMap.png", &terrainImageWidth, &terrainImageHeight, &terrainImageChannel, 0);
 
     int terrainImageColorWidth, terrainImageColorHeight, terrainImageColorChannel;
-    unsigned char* terrainImageDataColor = stbi_load("Textures\\brickTextureO.jpg", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
+    unsigned char* terrainImageDataColor = stbi_load("Textures\\terrainTest2TextureO.png", &terrainImageColorWidth, &terrainImageColorHeight, &terrainImageColorChannel, 0);
     // std::cout << "terrain image channel count " << terrainImageChannel << std::endl;
     if (terrainImageColorWidth != terrainImageWidth || terrainImageColorHeight != terrainImageHeight)
     {
         std::cout << "images not same size" << std::endl;
     }
 
+    Scene testScene = Scene("Scenes\\testScene.scene");
+    testScene.Load();
    
     std::vector<Object> terrainObjects;
     int voxelCount = 0;
@@ -370,7 +373,7 @@ int main()
     {
         for (int y = 0; y < 16; y++)
         {
-            Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), 
+            /*Object terrainObject = Object(glm::vec3(x * 8, 0, y * 8), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0),
                 terrainImageData, terrainImageWidth, terrainImageHeight, terrainImageChannel,0,
                 terrainImageDataColor, terrainImageColorChannel, x * 64, y * 64, 100.0);//64
             terrainObject.updateShader(voxelShader);
@@ -380,6 +383,7 @@ int main()
             terrainObjects.push_back(terrainObject);
             voxelCount += terrainObject.voxelSize.x * terrainObject.voxelSize.y * terrainObject.voxelSize.z;
             std::cout << (x*16 + y) << "/256 " << (float(x*16 + y) / 256)*100 << "%" << std::endl;
+            */
         }
     }
     double terrainTotalTime = (glfwGetTime() - terrainStartTime) * 1000.0;
@@ -506,10 +510,14 @@ int main()
                 }
             }
         }
+        testScene.Render(view, projection,player.pos,
+            player.lookDir,glm::vec4(float(width), float(height), fov, far));
+        /*
         for (int i = 0; i < terrainObjects.size(); i++)
         {
             terrainObjects[i].render(view, projection);
         }
+        */
         //testObject.rotate(-rot, glm::normalize(glm::vec3(0, 1, 0)));
        // testObject.pos = glm::vec3(1, 0, 0);
        // testObject.rotate(5, glm::normalize(glm::vec3(1, 1, 0)));
