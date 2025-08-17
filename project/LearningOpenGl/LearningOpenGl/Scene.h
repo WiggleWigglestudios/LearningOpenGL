@@ -22,8 +22,13 @@ public:
 	std::string sceneText;
 	Shader voxelShader;
 
+
+	unsigned int meshVBO; //vertex buffer object for the cube mesh
+	unsigned int meshVAO; //vertex array object for the cube mesh
+
 	Scene(const std::string& _sceneFilePath);
 	void Load();
 	void Render(glm::mat4 viewMat, glm::mat4 projectionMat, glm::vec3 playerPos, glm::vec3 playerLookDir, glm::vec4 windowInfo);
-
+	void setUpInstanceRender();
+	void InstanceRender(glm::mat4 viewMat, glm::mat4 projectionMat, glm::vec3 playerPos, glm::vec3 playerLookDir, glm::vec4 windowInfo);
 };

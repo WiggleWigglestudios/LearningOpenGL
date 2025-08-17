@@ -299,3 +299,55 @@ void Scene::Render(glm::mat4 viewMat, glm::mat4 projectionMat, glm::vec3 playerP
         objects[i].render(viewMat, projectionMat);
     }
 }
+
+void Scene::setUpInstanceRender()
+{
+    float vertices[] = {
+      -0.5f,-0.5f,-0.5f,  0.0f,0.0f,0.0f,
+      -0.5f,-0.5f,0.5f,   0.0f,0.0f,1.0f,
+      -0.5f,0.5f,-0.5f,   0.0f,1.0f,0.0f,
+      -0.5f,0.5f,0.5f,    0.0f,1.0f,1.0f,
+      0.5f,-0.5f,-0.5f,   1.0f,0.0f,0.0f,
+      0.5f,-0.5f,0.5f,    1.0f,0.0f,1.0f,
+      0.5f,0.5f,-0.5f,    1.0f,1.0f,0.0f,
+      0.5f,0.5f,0.5f,     1.0f,1.0f,1.0f,
+    };
+    unsigned int indices[] = {
+        //back face
+        0,2,6,
+        6,4,0,
+        //front face
+        5,7,3,
+        5,3,1,
+        //bottom face
+        0,5,1,
+        0,4,5,
+        //top face
+        6,2,3,
+        6,3,7,
+        //left face
+        2,0,1,
+        2,1,3,
+        //right face
+        4,6,7,
+        4,7,5
+    };
+    
+    glGenVertexArrays(1, &meshVAO);
+    glBindVertexArray(meshVAO);
+
+    glGenBuffers(1, &meshVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, meshVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+
+}
+
+void Scene::InstanceRender(glm::mat4 viewMat, glm::mat4 projectionMat, glm::vec3 playerPos, glm::vec3 playerLookDir, glm::vec4 windowInfo)
+{
+}
+
+
+
+
+
